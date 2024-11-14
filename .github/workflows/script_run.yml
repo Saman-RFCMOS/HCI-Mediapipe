@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04 
+    runs-on: ubuntu-22.04  # Switch to Ubuntu 20.04 runner (potentially with XCB)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -13,9 +13,9 @@ jobs:
           python-version: '3.9'
       - name: Update pip (optional, but recommended)
         run: python -m pip install --upgrade pip
-      - name: Uninstall dependencies
-        run: pip uninstall opencv-python;
+      - name: Uninstall dependencies (optional)
+        run: pip uninstall opencv-python  # Removes any existing OpenCV version
       - name: Install dependencies
-        run: pip install opencv-python-headless mediapipe  
+        run: pip install opencv-python-headless mediapipe  # Install headless OpenCV and MediaPipe
       - name: Run Python Script
         run: python main_app.py
