@@ -12,4 +12,4 @@ jobs:
         with:
           python-version: '3.9'
       - name: Run Python Script
-        run: python Main_app.py
+        run: python main_app.py
