@@ -5,35 +5,7 @@ import mediapipe as mp
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
-# For webcam input
-
-cap = cv2.VideoCapture(0)  # Replace 0 with the correct index if needed
-
-if cap.isOpened():
-    print("Camera is opened successfully")
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        cv2.imshow("Frame", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    cap.release()
-    cv2.destroyAllWindows()
-else:
-    print("Error opening camera")
-
-num_cameras = 0
-for i in range(10):  # Adjust the upper limit based on expected cameras
-    cap = cv2.VideoCapture(i)
-    if cap.isOpened():
-        num_cameras += 1
-        cap.release()
-    else:
-        break
-
-print("Number of cameras:", num_cameras)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
     while cap.isOpened():
