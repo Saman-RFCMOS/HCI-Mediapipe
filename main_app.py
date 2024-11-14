@@ -6,16 +6,18 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 
 # For webcam input
-num_cameras = len(cv2.VideoCapture.getBackendNames())
-print("Number of cameras:", num_cameras)
+import cv2
 
-for i in range(num_cameras):
+num_cameras = 0
+for i in range(10):  # Adjust the upper limit based on expected cameras
     cap = cv2.VideoCapture(i)
     if cap.isOpened():
-        print(f"Camera {i} is opened")
+        num_cameras += 1
         cap.release()
     else:
-        print(f"Camera {i} is not available")
+        break
+
+print("Number of cameras:", num_cameras)
 cap = cv2.VideoCapture(0)
 
 with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
