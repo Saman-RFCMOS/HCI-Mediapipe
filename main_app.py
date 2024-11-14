@@ -10,7 +10,7 @@ with mp_hands.Hands(
     static_image_mode=True,
     max_num_hands=2,
     min_detection_confidence=0.5) as hands:
-    image = cv2.flip(cv2.imread('path/to/your/image.jpg'), 1)
+    image = cv2.flip(cv2.imread('gesture_images/up.jpg'), 1)
     results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
     # Print the hand landmarks
