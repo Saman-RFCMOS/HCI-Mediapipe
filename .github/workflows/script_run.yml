@@ -9,9 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+        with:  
+          python-version: '3.9'
       - name: Install dependencies
         run: pip install opencv-python
-        with:
-          python-version: '3.9'
       - name: Run Python Script
         run: python main_app.py
