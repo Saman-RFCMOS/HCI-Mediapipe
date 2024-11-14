@@ -12,6 +12,6 @@ jobs:
         with:  
           python-version: '3.9'
       - name: Install dependencies
-        run: pip install opencv-python
+        run: pip install mediapipe opencv-python
       - name: Run Python Script
         run: python main_app.py
