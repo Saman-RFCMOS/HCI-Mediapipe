@@ -9,6 +9,11 @@ jobs:
   webcam-check:
     runs-on: ubuntu-latest  
     steps:
+      - name: Set up v4l2-ctl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y v4l-utils  # Install v4l2-ctl tool
+          
       - name: Run v4l2-ctl Command
         run: |
           echo "Listing video devices:"
