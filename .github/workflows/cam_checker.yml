@@ -7,7 +7,7 @@ on:
 
 jobs:
   webcam-check:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest  
     steps:
       - name: Run v4l2-ctl Command
         run: |
