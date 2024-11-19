@@ -1,0 +1,15 @@
+name: Check Webcam
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  webcam-check:
+    runs-on: self-hosted
+    steps:
+      - name: Run v4l2-ctl Command
+        run: |
+          echo "Listing video devices:"
+          v4l2-ctl --list-devices
