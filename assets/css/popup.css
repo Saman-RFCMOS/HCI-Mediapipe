@@ -31,7 +31,7 @@
   animation-name: animatetop;
   animation-duration: 0.4s
 }
-@media (max-width: 768px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .modalx-content {
     width: 90%;
   }
