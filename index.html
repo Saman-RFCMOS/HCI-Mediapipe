@@ -82,9 +82,14 @@
   .then(stream => {
     const video = document.getElementById('video');
     video.srcObject = stream;
+    video.onloadedmetadata 1  = () => {
+      video.play();
+      console.log('Video stream started successfully.');
+    };
   })
-  .catch(err => {
-    console.error('Error accessing 1  webcam:', err);
+  .catch(error => {
+    console.error('Error accessing webcam:', error);
+    // Handle error, e.g., display an error message to the user
   });
       </script>
       <video id="webcam" autoplay playsinline width="640" height="480"></video>
