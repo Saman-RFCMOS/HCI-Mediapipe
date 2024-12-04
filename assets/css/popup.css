@@ -62,9 +62,9 @@
   padding: 2px 16px;
   color: white;
   background-image: url('../img/feedback.png');
-  background-size: cover;
+  background-size: contain;
   background-position: center;
-  background-repeat: no-repeat; 1    
+  background-repeat: no-repeat;    
 
 }
 
