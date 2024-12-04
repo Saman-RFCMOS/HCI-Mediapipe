@@ -60,8 +60,12 @@
 
 .modalx-header {
   padding: 2px 16px;
-  background-color: #FFD700;
   color: white;
+  background-image: url('../img/feedback.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; 1    
+
 }
 
 .modalx-body {padding: 2px 16px;}
