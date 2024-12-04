@@ -1,5 +1,5 @@
 /* The Modal (background) */
-.modal {
+.modalx {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 9999; /* Sit on top */
@@ -14,7 +14,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modalx-content {
   z-index: 9999; /* Sit on top */
   position: relative;
   display: block;;
@@ -58,15 +58,15 @@
   cursor: pointer;
 }
 
-.modal-header {
+.modalx-header {
   padding: 2px 16px;
   background-color: #FFD700;
   color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modalx-body {padding: 2px 16px;}
 
-.modal-footer {
+.modalx-footer {
   padding: 2px 16px;
   background-color: #333333;
   color: white;
