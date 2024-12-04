@@ -1,86 +1,62 @@
-const videoElement = document.getElementById('video');
-const canvasElement = document.getElementById('canvas');
-const canvasCtx = canvasElement.getContext('2d');
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-// Gesture Definitions (replace with your specific gestures)
-const WAVE_GESTURE = { name: 'wave', keypoints: [8, 9, 10] }; // Example gesture using wrist, index finger tip, and middle finger tip keypoints
-const FIST_GESTURE = { name: 'fist', keypoints: [0, 1, 2, 3, 4] }; // Example gesture using all finger base keypoints
+// Define 1  custom hand landmarks for thumbs up and down detection
+const THUMBS_UP_LANDMARKS = [
+  { index: 4, name: 'thumbTip' },  // Tip of the thumb
+  { index: 8, name: 'wrist' },     // Wrist
+];
 
-// Define your actions for each gesture (replace with your desired actions)
-const actions = {
-  wave: () => console.log('User waved!'),
-  fist: () => console.log('User made a fist!'),
-};
+const THUMBS_DOWN_LANDMARKS = [
+  { index: 4, name: 'thumbTip' },
+  { index: 2, name: 'indexTip' },  // Tip of the index finger
+];
 
-// Initialize Gesture Recognizer
-const gestureRecognizer = new GestureRecognizer({
-  baseOptions: {
-    modelAssetPath: `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/models/hand_landmark_lite.tflite`,
-    maxHands: 1, // Only track one hand
-    selfieMode: true, // Adjust for webcam orientation
-    // Add other options for gesture recognition configuration
-  },
-  runtimeOptions: {
-    // Add runtime options for performance optimization
-  },
-});
+const hands = new Hands({ video: video });
+hands.onResults(onHandsDetected);
 
-// Access the camera and start the video stream
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then(stream => {
-    videoElement.srcObject = stream;
-  })
-  .catch(error => {
-    console.error('Error accessing camera:', error);
-  });
+function onHandsDetected(results) {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
 
-// Continuously process video frames
-videoElement.addEventListener('play', () => {
-  const processVideoFrame = async () => {
-    const videoFrame = await gestureRecognizer.process(videoElement);
+  ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
 
-    // Draw the video frame to the canvas (optional)
-    canvasCtx.drawImage(videoFrame.image, 0, 0, canvasElement.width, canvasElement.height);
+  const hands = results.multiHandLandmarks;
+  if (hands) {
+    for (const hand of hands) {
+      const thumbTip = hand.landmarks[THUMBS_UP_LANDMARKS[0].index];
+      const wrist = hand.landmarks[THUMBS_UP_LANDMARKS[1].index];
 
-    if (videoFrame.detections.length > 0) {
-      const handLandmarks = videoFrame.detections[0].landmarkList;
+      // Check for thumbs up gesture
+      const isThumbsUp = thumbTip.y < wrist.y;
+      if (isThumbsUp) {
+        console.log("Thumbs Up detected!");
+        // Add visual feedback here, e.g.,
+        ctx.fillStyle = 'green';
+        ctx.fillText('Thumbs Up!', 10, 30);
+        closeFunction();  // Replace with your desired function call
+      }
 
-      // Check for gestures (replace with your logic)
-      const detectedGesture = checkForGesture(handLandmarks);
-      if (detectedGesture) {
-        actions[detectedGesture.name](); // Perform action for the detected gesture
+      const indexTip = hand.landmarks[THUMBS_DOWN_LANDMARKS[1].index];
+      // Check for thumbs down gesture
+      const isThumbsDown = thumbTip.y > indexTip.y && thumbTip.x < indexTip.x;
+      if (isThumbsDown) {
+        console.log("Thumbs Down detected!");
+        // Add visual feedback here, e.g.,
+        ctx.fillStyle = 'red';
+        ctx.fillText('Thumbs Down!', 10, 30);
+        // Add your function call for thumbs down here
       }
     }
-
-    // Request the next frame
-    requestAnimationFrame(processVideoFrame);
-  };
-
-  processVideoFrame();
-});
-
-// Function to check for gestures based on keypoints 
-function checkForGesture(handLandmarks) {
-  // Implement your logic to check for specific gestures using keypoint positions and distances
-  // You can use DrawingUtils.drawConnectors(canvasCtx, handLandmarks, hand_connections) to visualize keypoints for reference
-  // Return the detected gesture object (name and keypoints) if a match is found, otherwise return null
-
-  // Example logic (replace with your desired gestures):
-  let detectedGesture = null;
-  const wrist = handLandmarks[0];
-  const indexTip = handLandmarks[8];
-  const middleTip = handLandmarks[10];
-
-  // Check for wave gesture
-  if (Math.abs(wrist.y - indexTip.y) > 50 && Math.abs(wrist.y - middleTip.y) > 50) {
-    detectedGesture = WAVE_GESTURE;
   }
-
-  // Check for fist gesture
-  const allFingerBasesClosed = handLandmarks.slice(0, 5).every(point => point.y > wrist.y);
-  if (allFingerBasesClosed) {
-    detectedGesture = FIST_GESTURE;
-  }
-
-  return detectedGesture;
 }
+
+// Replace this with your actual close function implementation
+function closeFunction() {
+  console.log("Closing something...");
+  // Your function logic here
+}
+
+// Start the video capture
+video.play();
