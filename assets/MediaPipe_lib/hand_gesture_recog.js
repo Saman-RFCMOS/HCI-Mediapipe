@@ -1,4 +1,4 @@
- async function setupWebcam() {
+async function setupWebcam() {
       const videoElement = document.getElementById('webcam');
       
       // Request the webcam stream
@@ -36,8 +36,10 @@
 
       const gestures = await hands.classify(canvasElement);
 
+      console.log('Gestures:', gestures);  // Log the gesture detection output
+
       if (gestures.length > 0) {
-        const gesture = gestures[0].categoryName;
+        const gesture = gestures[0].categoryName;  // Get gesture category name
         const resultElement = document.getElementById('gestureResult');
 
         if (gesture === 'Thumbs Up') {
@@ -45,7 +47,7 @@
         } else if (gesture === 'Thumbs Down') {
           resultElement.textContent = 'Thumbs Down!';
         } else {
-          resultElement.textContent = 'No gesture detected';
+          resultElement.textContent = 'No gesture detected: ' + gesture;
         }
       }
     }
