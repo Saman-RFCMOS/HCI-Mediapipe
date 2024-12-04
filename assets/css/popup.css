@@ -56,12 +56,17 @@
 
 /* The Close Button */
 .closex {
-  color: red;
-  float: right;
-  font-size: 36px;
-  font-weight: bold;
-  border-radius: 10px;
-  border: 1px solid #000;
+    color: red;
+    float: right;
+    font-size: 36px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid #F00;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
 }
 
 .closex:hover,
