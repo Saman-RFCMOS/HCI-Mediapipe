@@ -44,15 +44,15 @@
 }
 
 /* The Close Button */
-.close {
+.closex {
   color: red;
   float: right;
   font-size: 36px;
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.closex:hover,
+.closex:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
