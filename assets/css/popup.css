@@ -45,9 +45,9 @@
 
 /* The Close Button */
 .close {
-  color: white;
-  float: left;
-  font-size: 28px;
+  color: red;
+  float: right;
+  font-size: 36px;
   font-weight: bold;
 }
 
