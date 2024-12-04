@@ -17,6 +17,9 @@
 .modal-content {
   z-index: 9999; /* Sit on top */
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #fefefe;
   margin: auto;
   padding: 0;
