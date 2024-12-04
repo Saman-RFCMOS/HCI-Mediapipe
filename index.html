@@ -23,6 +23,7 @@
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/css/popup.css" rel="stylesheet">
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 </head>
@@ -54,18 +55,23 @@
         <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
         <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
         <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
-        <li><a href="#survey" onclick="openPopup()" style="text-decoration: none; padding: 10px 20px; border-radius: 5px; background-color: #FFD700; color: black;font-weight:Bold;"> Your Survey, Your Prize!</a></li>
+        <li><a href="#survey" id="open_survey" style="text-decoration: none; padding: 10px 20px; border-radius: 5px; background-color: #FFD700; color: black;font-weight:Bold;"> Your Survey, Your Prize!</a></li>
       </ul>
     </nav>
-<script>
-function openPopup() {
-  window.open("popup.html", "myPopup", "width=400,height=300");
-}
-</script>
+
   </header>
 
   <main class="main">
-
+   <!-- Pop-up section-->
+    <div id="survey_popup" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+    </div>
+    </div>
+   <!-- END Pop-up section-->
+    
     <!-- Home Section -->
     <section id="Home_page" class="hero section dark-background">
 
@@ -421,6 +427,7 @@ function openPopup() {
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/js/popup.js"></script>
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
