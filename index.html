@@ -7,7 +7,12 @@
   <title>HCI Group Project</title>
   <meta content="This a hand gesture based feedback system for web browsing exprience" name="description">
   <meta content="HCI,CS449,CS549,Google,Mediapipe,Hand,Gesture,Recognition" name="keywords">
-
+  
+  <!Gesture Library-->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/hands.with_custom_landmarks.min.js"></script>
+  <script src="assets/js/popup.js"></script>
+   <script src="hand_gesture_recog.js"></script>
+  
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -72,6 +77,7 @@
       <span class="closex">&times;</span>
     </div>
     <div class="modalx-body">
+      <video id="video" width="640" height="480" autoplay hidden></video>
       <p>Some text in the  Body</p>
       <p>Some other text...</p>
     </div>
@@ -362,7 +368,7 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/js/popup.js"></script>
+  
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
