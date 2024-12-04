@@ -1,62 +1,65 @@
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
+const video = document.getElementById('webcam');
+const canvas = document.getElementById('outputCanvas');
 const ctx = canvas.getContext('2d');
 
-// Define 1  custom hand landmarks for thumbs up and down detection
-const THUMBS_UP_LANDMARKS = [
-  { index: 4, name: 'thumbTip' },  // Tip of the thumb
-  { index: 8, name: 'wrist' },     // Wrist
-];
+let handLandmarkList; // Stores hand landmarks for gesture detection
 
-const THUMBS_DOWN_LANDMARKS = [
-  { index: 4, name: 'thumbTip' },
-  { index: 2, name: 'indexTip' },  // Tip of the index finger
-];
+// Function to handle successful webcam access
+function onWebcamLoaded() {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+      processVideo();
+    })
+    .catch(err => {
+      console.error("Error accessing webcam:", err);
+    });
+}
 
-const hands = new Hands({ video: video });
-hands.onResults(onHandsDetected);
+// Function to process each video frame
+function processVideo() {
+  const hands = new HandDetection({ maxNumHands: 1 }); // MediaPipe Hand Detection
+  hands.onResults(onHandsDetected);
+  video.requestVideoFrameAnalysis(processVideo);
+}
 
+// Function to handle hand detection results
 function onHandsDetected(results) {
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-
-  const hands = results.multiHandLandmarks;
-  if (hands) {
-    for (const hand of hands) {
-      const thumbTip = hand.landmarks[THUMBS_UP_LANDMARKS[0].index];
-      const wrist = hand.landmarks[THUMBS_UP_LANDMARKS[1].index];
-
-      // Check for thumbs up gesture
-      const isThumbsUp = thumbTip.y < wrist.y;
-      if (isThumbsUp) {
-        console.log("Thumbs Up detected!");
-        // Add visual feedback here, e.g.,
-        ctx.fillStyle = 'green';
-        ctx.fillText('Thumbs Up!', 10, 30);
-        closeFunction();  // Replace with your desired function call
-      }
-
-      const indexTip = hand.landmarks[THUMBS_DOWN_LANDMARKS[1].index];
-      // Check for thumbs down gesture
-      const isThumbsDown = thumbTip.y > indexTip.y && thumbTip.x < indexTip.x;
-      if (isThumbsDown) {
-        console.log("Thumbs Down detected!");
-        // Add visual feedback here, e.g.,
-        ctx.fillStyle = 'red';
-        ctx.fillText('Thumbs Down!', 10, 30);
-        // Add your function call for thumbs down here
-      }
-    }
+  // Draw hand landmarks if any hands are detected
+  if (results.multiHandLandmarks) {
+    handLandmarkList = results.multiHandLandmarks[0];
+    drawLandmarks(ctx, handLandmarkList, 'red');
+    checkHandGesture();
   }
 }
 
-// Replace this with your actual close function implementation
-function closeFunction() {
-  console.log("Closing something...");
-  // Your function logic here
+// Function to draw hand landmarks on canvas
+function drawLandmarks(ctx, landmarks, color) {
+  landmarks.forEach(landmark => {
+    const [x, y] = landmark;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+  });
 }
 
-// Start the video capture
-video.play();
+// Function to check for thumbs up/down gesture (simple example)
+function checkHandGesture() {
+  if (!handLandmarkList) return;
+
+  const wristLandmark = handLandmarkList[0];
+  const thumbTip = handLandmarkList[4];
+
+  // Check if thumb tip is above the wrist (thumbs up)
+  if (thumbTip.y < wristLandmark.y) {
+    console.log("Thumbs Up detected! Call function A here");
+  } else if (thumbTip.y > wristLandmark.y) {
+    console.log("Thumbs Down detected! Call function B here");
+  }
+}
+
+// Call onWebcamLoaded function when the page loads
+onWebcamLoaded();
