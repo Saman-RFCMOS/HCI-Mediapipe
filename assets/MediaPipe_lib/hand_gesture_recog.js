@@ -25,11 +25,10 @@
 
     // Load MediaPipe Gesture Model
     async function setupGestureDetection() {
-      const hands = await new Tasks.HandGestureClassifier({
-        baseOptions: {
-          modelAssetPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/hand_gesture_model.tflite',
-        }
-      });
+      // Now using correct import for HandGestureClassifier
+      const hands = await HandGestureClassifier.createFromModelPath(
+        'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/hand_gesture_model.tflite'
+      );
 
       return hands;
     }
