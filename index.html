@@ -77,6 +77,16 @@
       <span class="closex">&times;</span>
     </div>
     <div class="modalx-body">
+      <script>
+        navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => {
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+  })
+  .catch(err => {
+    console.error('Error accessing 1  webcam:', err);
+  });
+      </script>
       <video id="webcam" autoplay playsinline width="640" height="480"></video>
       <canvas id="outputCanvas" width="640" height="480"></canvas>
       <p>Some text in the  Body</p>
