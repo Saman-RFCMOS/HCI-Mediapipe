@@ -1,54 +1,58 @@
-import { HandGestureRecognition } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/hand_gesture_recognition.js';
+async function setupWebcam() {
+      const videoElement = document.getElementById('webcam');
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
+        return new Promise((resolve) => {
+          videoElement.onloadedmetadata = () => {
+            resolve(videoElement);
+          };
+        });
+      } catch (err) {
+        console.error("Error accessing webcam:", err);
+        alert("Please allow access to the webcam.");
+      }
+    }
 
-        // Initialize the gesture recognizer
-        const gestureRecognizer = new HandGestureRecognition.GestureRecognizer();
+    async function setupHandpose() {
+      const handpose = await handpose.load();
+      return handpose;
+    }
 
-        // Initialize webcam
-        const videoElement = document.getElementById('webcam');
-        const gestureOutput = document.getElementById('gesture-output');
+    async function detectGesture(videoElement, model) {
+      const predictions = await model.estimateHands(videoElement);
 
-        async function setupWebcam() {
-            // Get user media (video from webcam)
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            videoElement.srcObject = stream;
+      const resultElement = document.getElementById('gestureResult');
+      
+      if (predictions.length > 0) {
+        // Access keypoints to detect thumb gestures
+        const thumbTip = predictions[0].landmarks[4]; 
+        const indexTip = predictions[0].landmarks[8]; 
+
+        // "Thumbs up" gesture
+        const isThumbUp = thumbTip[1] < indexTip[1]; // Thumb higher than index -> thumbs up
+
+        if (isThumbUp) {
+          resultElement.textContent = 'Thumbs Up!';
+        } else {
+          resultElement.textContent = 'No Thumbs Up Detected!';
         }
+      } else {
+        resultElement.textContent = 'No hands detected.';
+      }
+    }
 
-        async function detectGestures(frame) {
-            // Process the video frame for gesture recognition
-            const gestures = await gestureRecognizer.recognize(frame);
-            if (gestures.length > 0) {
-                // Display the detected gesture
-                gestureOutput.textContent = `Detected Gesture: ${gestures[0].name}`;
-            } else {
-                gestureOutput.textContent = 'No gesture detected';
-            }
-        }
+    async function main() {
+      const videoElement = await setupWebcam();
+      const handpose = await setupHandpose();
+      
+      const processFrame = () => {
+        detectGesture(videoElement, handpose);
+        requestAnimationFrame(processFrame);
+      };
 
-        async function startDetection() {
-            // Set up MediaPipe HandGestureRecognizer
-            await gestureRecognizer.initialize();
+      processFrame();
+    }
 
-            // Start webcam and detection loop
-            const videoTrack = videoElement.srcObject.getVideoTracks()[0];
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-
-            // Start the video processing loop
-            function processFrame() {
-                canvas.width = videoElement.videoWidth;
-                canvas.height = videoElement.videoHeight;
-                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-                // Detect gestures on the captured frame
-                detectGestures(canvas);
-
-                // Continue processing the next frame
-                requestAnimationFrame(processFrame);
-            }
-
-            // Start processing the video
-            processFrame();
-        }
-
-        // Initialize the webcam and start gesture detection
-        setupWebcam().then(startDetection);
+    // Run the main function
+    main();
