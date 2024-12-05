@@ -23,7 +23,7 @@ async function initializeGestureRecognizer() {
 
   // Set up recognition in image mode (sync with video frames)
   gestureRecognizer.setOptions({
-    runningMode: "image" // Change to "image" instead of "video" for better synchronization
+    runningMode: "video" // Change to "image" instead of "video" for better synchronization
   });
 
   let lastVideoTime = -1;
