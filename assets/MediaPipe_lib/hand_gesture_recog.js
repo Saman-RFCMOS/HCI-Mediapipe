@@ -1,40 +1,69 @@
+import { FilesetResolver, GestureRecognizer } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs';
+
 async function initializeGestureRecognizer() {
-  try {
-    // Initialize the vision tasks with the correct path to the model
-    const vision = await FilesetResolver.forVisionTasks(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-    );
+  // Ensure the MediaPipe library is loaded globally
+  const vision = await FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
+  );
 
-    // Initialize the Gesture Recognizer
-    const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
-      },
-      numHands: 1
-    });
+  // Create Gesture Recognizer instance with model options
+  const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+    },
+    numHands: 1
+  });
 
-    // Assuming you have an image element in your HTML (or any static image data)
-    const imageElement = document.getElementById('staticImage'); // Replace with your actual image element ID
+  // Initialize video stream (webcam)
+  const videoElement = document.getElementById('video');
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: true
+  });
+  videoElement.srcObject = stream;
 
-    // Ensure the image is loaded and ready for processing
-    imageElement.onload = async () => {
-      // Process the image for gesture recognition
-      const gestureRecognitionResult = await gestureRecognizer.recognizeForImage(imageElement);
-      processResult(gestureRecognitionResult);  // Handle the result as you need
-    };
+  // Set up recognition in video mode (ensure frames are processed in sync with the video)
+  gestureRecognizer.setOptions({
+    runningMode: "video"  // Continue with "video" mode for real-time frame processing
+  });
 
-    // Trigger image loading
-    imageElement.src = 'path_to_your_image.jpg'; // Replace with your image path or source URL
-  } catch (error) {
-    console.error("Error initializing Gesture Recognizer:", error);
+  let lastVideoTime = -1;
+
+  // Start the render loop
+  function renderLoop() {
+    const video = document.getElementById("video");
+
+    // Ensure the video has enough data and its time has changed to avoid duplicate frames
+    if (video.readyState === video.HAVE_ENOUGH_DATA && video.currentTime !== lastVideoTime) {
+      // Process video frame for gesture recognition
+      const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
+
+      // Process recognition result if available
+      if (gestureRecognitionResult) {
+        processResult(gestureRecognitionResult);
+      }
+
+      // Update the last processed time to avoid reprocessing the same frame
+      lastVideoTime = video.currentTime;
+    }
+
+    // Request the next frame for animation
+    requestAnimationFrame(renderLoop);
   }
+
+  // Start the render loop to continuously process frames
+  renderLoop();
 }
 
+// Start the process when the window loads
+window.onload = initializeGestureRecognizer;
+
 function processResult(result) {
-  if (result && result.gestures) {
-    // Process and display recognized gestures
-    console.log("Gestures detected:", result.gestures);
-  } else {
-    console.log("No gestures detected.");
+  // Ensure we have gesture data and process it
+  if (result.gestures && result.gestures.length > 0) {
+    const gesture = result.gestures[0].categoryName;
+    if (gesture === 'Thumb_Up') {
+      // Alert when a "Thumbs Up" gesture is detected
+      window.alert("Thumbs Up Detected!");
+    }
   }
 }
