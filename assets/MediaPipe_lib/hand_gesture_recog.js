@@ -10,7 +10,7 @@ async function initializeGestureRecognizer() {
     // Create Gesture Recognizer instance with model options
     const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/latest/gesture_recognizer.task"
       },
       numHands: 1
     });
