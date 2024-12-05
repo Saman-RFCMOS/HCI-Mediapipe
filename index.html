@@ -11,20 +11,15 @@
   <!Gesture Library-->
  
     <style>
-    #webcam {
-      width: 100%;
-      height: auto;
-      transform: rotateY(180deg); /* Flip the video to match the user's view */
-    }
-    #gesture_output {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 10px;
-      border-radius: 5px;
+    video {
+            border: 2px solid black;
+            width: 80%;
+            max-width: 600px;
+        }
+        #gesture-output {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #333;
     }
   </style>
   
@@ -94,11 +89,9 @@
     </div>
     <div class="modalx-body">
    
-    <video id="webcam" autoplay playsinline></video>
-    <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
-      <p id="gesture_output" class="output">
-    
-      <p>Some other text...</p>
+    <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    <div id="gesture-output">Detecting gestures...</div>
+    <p>Some other text...</p>
     </div>
   </div>
 
