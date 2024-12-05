@@ -63,7 +63,8 @@ function processResult(result) {
       gestureMsgElement.style.display = 'block'; // Show message
       gestureMsgElement.innerText = 'Thumbs Up Detected!';
     } else {
-      gestureMsgElement.style.display = 'none'; // Hide message for other gestures
+      gestureMsgElement.style.display = 'block'; // Show message
+      gestureMsgElement.innerText = 'Not Detect';
     }
   }
 }
