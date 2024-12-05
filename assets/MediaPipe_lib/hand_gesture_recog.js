@@ -1,9 +1,11 @@
 async function initializeGestureRecognizer() {
   try {
+    // Initialize the vision tasks with the correct path to the model
     const vision = await FilesetResolver.forVisionTasks(
       "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
     );
 
+    // Initialize the Gesture Recognizer
     const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
       baseOptions: {
         modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
@@ -11,41 +13,28 @@ async function initializeGestureRecognizer() {
       numHands: 1
     });
 
-    const videoElement = document.getElementById('video');
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true
-    });
-    videoElement.srcObject = stream;
+    // Assuming you have an image element in your HTML (or any static image data)
+    const imageElement = document.getElementById('staticImage'); // Replace with your actual image element ID
 
-    gestureRecognizer.setOptions({
-      runningMode: "video"
-    });
+    // Ensure the image is loaded and ready for processing
+    imageElement.onload = async () => {
+      // Process the image for gesture recognition
+      const gestureRecognitionResult = await gestureRecognizer.recognizeForImage(imageElement);
+      processResult(gestureRecognitionResult);  // Handle the result as you need
+    };
 
-    let lastVideoTime = -1;
-
-    function renderLoop() {
-      const video = document.getElementById("video");
-
-      // Ensure the video is ready and has a new frame to process
-      if (video.readyState === video.HAVE_ENOUGH_DATA && video.currentTime !== lastVideoTime) {
-        // Check if the video has a valid frame
-        if (video.videoWidth > 0 && video.videoHeight > 0) {
-          const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
-
-          if (gestureRecognitionResult) {
-            processResult(gestureRecognitionResult);
-          }
-        }
-
-        lastVideoTime = video.currentTime;
-      }
-
-      requestAnimationFrame(renderLoop);
-    }
-
-    renderLoop();
-
+    // Trigger image loading
+    imageElement.src = 'path_to_your_image.jpg'; // Replace with your image path or source URL
   } catch (error) {
     console.error("Error initializing Gesture Recognizer:", error);
+  }
+}
+
+function processResult(result) {
+  if (result && result.gestures) {
+    // Process and display recognized gestures
+    console.log("Gestures detected:", result.gestures);
+  } else {
+    console.log("No gestures detected.");
   }
 }
