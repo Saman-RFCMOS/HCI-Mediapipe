@@ -1,61 +1,56 @@
-// Function to set up the webcam
-    async function setupWebcam() {
-      const videoElement = document.getElementById('webcam');
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoElement.srcObject = stream;
-        return new Promise((resolve) => {
-          videoElement.onloadedmetadata = () => {
-            resolve(videoElement);
-          };
-        });
-      } catch (err) {
-        console.error("Error accessing webcam:", err);
-        alert("Please allow access to the webcam.");
-      }
-    }
+async function predictWebcam() {
+  const webcamElement = document.getElementById("webcam");
+  // Now let's start detecting the stream.
+  if (runningMode === "IMAGE") {
+    runningMode = "VIDEO";
+    await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+  }
+  let nowInMs = Date.now();
+  if (video.currentTime !== lastVideoTime) {
+    lastVideoTime = video.currentTime;
+    results = gestureRecognizer.recognizeForVideo(video, nowInMs);
+  }
 
-    // Function to set up the handpose model
-    async function setupHandpose() {
-      const handpose = await handpose.load();
-      return handpose;
-    }
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  const drawingUtils = new DrawingUtils(canvasCtx);
 
-    // Function to detect gestures
-    async function detectGesture(videoElement, model) {
-      const predictions = await model.estimateHands(videoElement);
+  canvasElement.style.height = videoHeight;
+  webcamElement.style.height = videoHeight;
+  canvasElement.style.width = videoWidth;
+  webcamElement.style.width = videoWidth;
 
-      const resultElement = document.getElementById('gestureResult');
-      
-      if (predictions.length > 0) {
-        // Access keypoints to detect thumb gestures
-        const thumbTip = predictions[0].landmarks[4]; // Thumb tip (index 4)
-        const indexTip = predictions[0].landmarks[8]; // Index tip (index 8)
-
-        // Example gesture detection: "Thumbs up" gesture
-        const isThumbUp = thumbTip[1] < indexTip[1]; // Thumb higher than index -> thumbs up
-
-        if (isThumbUp) {
-          resultElement.textContent = 'Thumbs Up!';
-        } else {
-          resultElement.textContent = 'No Thumbs Up Detected!';
+  if (results && results.landmarks) { // Check for results.landmarks before drawing
+    for (const landmarks of results.landmarks) {
+      drawingUtils.drawConnectors(
+        landmarks,
+        GestureRecognizer.HAND_CONNECTIONS,
+        {
+          color: "#00FF00",
+          lineWidth: 5
         }
-      } else {
-        resultElement.textContent = 'No hands detected.';
-      }
+      );
+      drawingUtils.drawLandmarks(landmarks, {
+        color: "#FF0000",
+        lineWidth: 2
+      });
     }
-
-    async function main() {
-      const videoElement = await setupWebcam();
-      const handpose = await setupHandpose();
-      
-      const processFrame = () => {
-        detectGesture(videoElement, handpose);
-        requestAnimationFrame(processFrame);
-      };
-
-      processFrame();
-    }
-
-    // Run the main function
-    main();
+  }
+  canvasCtx.restore();
+  if (results.gestures.length > 0) {
+    gestureOutput.style.display = "block";
+    gestureOutput.style.width = videoWidth;
+    const categoryName = results.gestures[0][0].categoryName;
+    const categoryScore = parseFloat(
+      results.gestures[0][0].score * 100
+    ).toFixed(2);
+    const handedness = results.handednesses[0][0].displayName;
+    gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
+  } else {
+    gestureOutput.style.display = "none";
+  }
+  // Call this function again for real-time processing
+  if (webcamRunning === true) {
+    window.requestAnimationFrame(predictWebcam);
+  }
+}
