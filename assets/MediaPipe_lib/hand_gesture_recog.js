@@ -57,7 +57,7 @@ function processResult(result) {
   if (result.gestures && result.gestures.length > 0) {
     const gesture = result.gestures[0].categoryName;
     if (gesture === 'Thumb_Up') {
-      console.log("Thumbs Up Detected!");
+      window.alert("Thumbs Up Detected!");
     }
   }
 }
