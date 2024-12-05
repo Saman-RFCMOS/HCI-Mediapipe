@@ -1,58 +1,70 @@
-async function setupWebcam() {
-      const videoElement = document.getElementById('webcam');
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoElement.srcObject = stream;
-        return new Promise((resolve) => {
-          videoElement.onloadedmetadata = () => {
-            resolve(videoElement);
-          };
-        });
-      } catch (err) {
-        console.error("Error accessing webcam:", err);
-        alert("Please allow access to the webcam.");
+const webcamElement = document.getElementById('webcam');
+    const gestureMsg = document.getElementById('gesture-msg');
+
+    // Setup webcam access
+    async function setupWebcam() {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true
+      });
+      webcamElement.srcObject = stream;
+    }
+
+    // Initialize MediaPipe Hands
+    const hands = new Hands({
+      locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1630862022/${file}`;
       }
+    });
+
+    hands.setOptions({
+      maxNumHands: 2,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+
+    hands.onResults(onResults);
+
+    // Start the webcam and detect gestures
+    async function start() {
+      await setupWebcam();
+
+      const camera = new Camera(webcamElement, {
+        onFrame: async () => {
+          await hands.send({ image: webcamElement });
+        },
+        width: 640,
+        height: 480
+      });
+      camera.start();
     }
 
-    async function setupHandpose() {
-      const handpose = await handpose.load();
-      return handpose;
-    }
+    // Handle the results from MediaPipe Hands
+    function onResults(results) {
+      if (!results.multiHandLandmarks) {
+        return;
+      }
 
-    async function detectGesture(videoElement, model) {
-      const predictions = await model.estimateHands(videoElement);
-
-      const resultElement = document.getElementById('gestureResult');
-      
-      if (predictions.length > 0) {
-        // Access keypoints to detect thumb gestures
-        const thumbTip = predictions[0].landmarks[4]; 
-        const indexTip = predictions[0].landmarks[8]; 
-
-        // "Thumbs up" gesture
-        const isThumbUp = thumbTip[1] < indexTip[1]; // Thumb higher than index -> thumbs up
-
-        if (isThumbUp) {
-          resultElement.textContent = 'Thumbs Up!';
+      // Detect the thumbs-up gesture
+      results.multiHandLandmarks.forEach((handLandmarks) => {
+        const thumbUpDetected = isThumbUp(handLandmarks);
+        if (thumbUpDetected) {
+          gestureMsg.style.display = 'block';
         } else {
-          resultElement.textContent = 'No Thumbs Up Detected!';
+          gestureMsg.style.display = 'none';
         }
-      } else {
-        resultElement.textContent = 'No hands detected.';
-      }
+      });
     }
 
-    async function main() {
-      const videoElement = await setupWebcam();
-      const handpose = await setupHandpose();
-      
-      const processFrame = () => {
-        detectGesture(videoElement, handpose);
-        requestAnimationFrame(processFrame);
-      };
+    // Check if the gesture is a thumbs-up
+    function isThumbUp(landmarks) {
+      const thumbTip = landmarks[4]; // Tip of the thumb (landmark index 4)
+      const thumbBase = landmarks[2]; // Base of the thumb (landmark index 2)
+      const indexTip = landmarks[8]; // Tip of the index finger (landmark index 8)
 
-      processFrame();
+      // Simple check: if the thumb is extended upwards and the index is pointing down
+      return thumbTip.y < thumbBase.y && indexTip.y > thumbBase.y;
     }
 
-    // Run the main function
-    main();
+    // Start the process
+    start();
