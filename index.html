@@ -26,6 +26,27 @@
   <link href="assets/css/popup.css" rel="stylesheet">
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+<style>
+    #webcam-container {
+      position: relative;
+      display: inline-block;
+    }
+    #webcam {
+      transform: scaleX(-1); /* Mirror the webcam feed */
+    }
+    #gesture-msg {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+  
 </head>
 
 <body class="index-page">
@@ -70,9 +91,10 @@
     <span class="closex">&times;</span>
     </div>
     <div class="modalx-body">
-   
-    <video id="webcam" autoplay playsinline width="640" height="480"></video>
-    <div id="gesture-output">Detecting gestures...</div>
+   <div id="webcam-container">
+    <video id="webcam" width="640" height="480" autoplay></video>
+    <div id="gesture-msg">Thumbs-Up Gesture Detected!</div>
+  </div>
     <p>Some other text...</p>
     
     </div>
@@ -361,7 +383,8 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/popup.js"></script>
-  <script src="assets/MediaPipe_lib/hand_gesture_recog.js" type="module"></script>
+  <script src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1630862022/mediapipe/hands.js"></script>
 
   
   
