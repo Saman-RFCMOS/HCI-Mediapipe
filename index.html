@@ -5,25 +5,26 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>HCI Group Project</title>
-  <meta content="This a hand gesture based feedback system for web browsing exprience" name="description">
+  <meta content="This a hand gesture based feedback system for web browsing experience" name="description">
   <meta content="HCI,CS449,CS549,Google,Mediapipe,Hand,Gesture,Recognition" name="keywords">
   
   <!Gesture Library-->
-   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/handpose@0.3.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0"></script>
  
     <style>
-    video {
+    #webcam {
       width: 100%;
       height: auto;
-      display: block;
-      margin: 0 auto;
+      transform: rotateY(180deg); /* Flip the video to match the user's view */
     }
-    .result {
-      font-size: 2rem;
-      text-align: center;
-      margin-top: 20px;
+    #gestureResult {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      border-radius: 5px;
     }
   </style>
   
@@ -92,8 +93,8 @@
     </div>
     <div class="modalx-body">
 
-      <video id="webcam" autoplay playsinline></video>
-      <div id="gestureResult"></div>
+    <video id="webcam" autoplay></video>
+    <div id="gestureResult">Detecting Gesture...</div>
     
       <p>Some other text...</p>
     </div>
@@ -386,6 +387,8 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/popup.js"></script>
   <script src="assets/MediaPipe_lib/hand_gesture_recog.js"></script> 
+   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
   
   
 
