@@ -1,70 +1,70 @@
-const webcamElement = document.getElementById('webcam');
-    const gestureMsg = document.getElementById('gesture-msg');
-
-    // Setup webcam access
+let gestureRecognizer;
+    let webcamElement = document.getElementById('webcam');
+    let gestureMsg = document.getElementById('gesture-msg');
+    
+    // Set up the webcam feed
     async function setupWebcam() {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true
-      });
-      webcamElement.srcObject = stream;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480 }
+        });
+        webcamElement.srcObject = stream;
+      } catch (error) {
+        console.error("Error accessing webcam: ", error);
+      }
     }
 
-    // Initialize MediaPipe Hands
-    const hands = new Hands({
-      locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1630862022/${file}`;
-      }
-    });
-
-    hands.setOptions({
-      maxNumHands: 2,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5
-    });
-
-    hands.onResults(onResults);
-
-    // Start the webcam and detect gestures
-    async function start() {
-      await setupWebcam();
-
-      const camera = new Camera(webcamElement, {
-        onFrame: async () => {
-          await hands.send({ image: webcamElement });
+    // Initialize Gesture Recognizer
+    async function initializeGestureRecognizer() {
+      const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm");
+      gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
         },
-        width: 640,
-        height: 480
+        numHands: 2
       });
-      camera.start();
+      gestureRecognizer.setOptions({
+        runningMode: "video",
+        minHandDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+        minHandPresenceConfidence: 0.5
+      });
     }
 
-    // Handle the results from MediaPipe Hands
-    function onResults(results) {
-      if (!results.multiHandLandmarks) {
-        return;
+    // Function to process the gesture recognition results
+    function processResult(gestureRecognitionResult) {
+      const gestures = gestureRecognitionResult.gestures;
+      
+      if (gestures && gestures.length > 0) {
+        const gesture = gestures[0].categoryName; // The recognized gesture
+        if (gesture === "Thumb_Up") {
+          gestureMsg.style.display = 'block'; // Show thumbs-up message
+        } else {
+          gestureMsg.style.display = 'none'; // Hide message for other gestures
+        }
+      }
+    }
+
+    // Video render loop to process each frame
+    let lastVideoTime = -1;
+    function renderLoop() {
+      const video = document.getElementById("webcam");
+
+      if (video.currentTime !== lastVideoTime) {
+        const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
+        processResult(gestureRecognitionResult);
+        lastVideoTime = video.currentTime;
       }
 
-      // Detect the thumbs-up gesture
-      results.multiHandLandmarks.forEach((handLandmarks) => {
-        const thumbUpDetected = isThumbUp(handLandmarks);
-        if (thumbUpDetected) {
-          gestureMsg.style.display = 'block';
-        } else {
-          gestureMsg.style.display = 'none';
-        }
-      });
+      requestAnimationFrame(renderLoop);
     }
 
-    // Check if the gesture is a thumbs-up
-    function isThumbUp(landmarks) {
-      const thumbTip = landmarks[4]; // Tip of the thumb (landmark index 4)
-      const thumbBase = landmarks[2]; // Base of the thumb (landmark index 2)
-      const indexTip = landmarks[8]; // Tip of the index finger (landmark index 8)
-
-      // Simple check: if the thumb is extended upwards and the index is pointing down
-      return thumbTip.y < thumbBase.y && indexTip.y > thumbBase.y;
+    // Start the video and gesture recognition process
+    async function start() {
+      await setupWebcam(); // Setup webcam
+      await initializeGestureRecognizer(); // Initialize Gesture Recognizer
+      renderLoop(); // Start rendering and processing
     }
 
-    // Start the process
+    // Start the app
     start();
