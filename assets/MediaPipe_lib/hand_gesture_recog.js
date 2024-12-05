@@ -17,9 +17,7 @@
     // Initialize Gesture Recognizer
     async function initializeGestureRecognizer() {
       // Ensure FilesetResolver is loaded before GestureRecognizer
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-      );
+      const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm/");
       
       // Load the Gesture Recognizer task
       gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
