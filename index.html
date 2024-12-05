@@ -16,7 +16,7 @@
       height: auto;
       transform: rotateY(180deg); /* Flip the video to match the user's view */
     }
-    #gestureResult {
+    #gesture_output {
       position: absolute;
       top: 20px;
       left: 20px;
@@ -93,8 +93,9 @@
     </div>
     <div class="modalx-body">
 
-    <video id="webcam" autoplay></video>
-    <div id="gestureResult">Detecting Gesture...</div>
+    <video id="webcam" autoplay playsinline></video>
+    <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
+      <p id="gesture_output" class="output">
     
       <p>Some other text...</p>
     </div>
