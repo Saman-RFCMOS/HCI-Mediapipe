@@ -4,7 +4,7 @@ import {
     DrawingUtils
   } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
   
-  const demosSection = document.getElementById("demos");
+  const demosSection = document.getElementById("survey_popup");
   let gestureRecognizer: GestureRecognizer;
   let runningMode = "IMAGE";
   let enableWebcamButton: HTMLButtonElement;
