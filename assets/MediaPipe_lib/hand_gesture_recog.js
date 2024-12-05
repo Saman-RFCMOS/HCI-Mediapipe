@@ -8,6 +8,7 @@ import { HandGestureRecognition } from 'https://cdn.jsdelivr.net/npm/@mediapipe/
         const gestureOutput = document.getElementById('gesture-output');
 
         async function setupWebcam() {
+            // Get user media (video from webcam)
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             videoElement.srcObject = stream;
         }
@@ -32,11 +33,12 @@ import { HandGestureRecognition } from 'https://cdn.jsdelivr.net/npm/@mediapipe/
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
 
+            // Start the video processing loop
             function processFrame() {
                 canvas.width = videoElement.videoWidth;
                 canvas.height = videoElement.videoHeight;
                 context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                
+
                 // Detect gestures on the captured frame
                 detectGestures(canvas);
 
