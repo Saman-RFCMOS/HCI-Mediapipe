@@ -1,5 +1,4 @@
-// Function to set up the webcam
-    async function setupWebcam() {
+ async function setupWebcam() {
       const videoElement = document.getElementById('webcam');
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -15,13 +14,11 @@
       }
     }
 
-    // Function to set up the handpose model
     async function setupHandpose() {
       const handpose = await handpose.load();
       return handpose;
     }
 
-    // Function to detect gestures
     async function detectGesture(videoElement, model) {
       const predictions = await model.estimateHands(videoElement);
 
@@ -29,10 +26,10 @@
       
       if (predictions.length > 0) {
         // Access keypoints to detect thumb gestures
-        const thumbTip = predictions[0].landmarks[4]; // Thumb tip (index 4)
-        const indexTip = predictions[0].landmarks[8]; // Index tip (index 8)
+        const thumbTip = predictions[0].landmarks[4]; 
+        const indexTip = predictions[0].landmarks[8]; 
 
-        // Example gesture detection: "Thumbs up" gesture
+        // "Thumbs up" gesture
         const isThumbUp = thumbTip[1] < indexTip[1]; // Thumb higher than index -> thumbs up
 
         if (isThumbUp) {
