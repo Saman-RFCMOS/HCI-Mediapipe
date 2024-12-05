@@ -45,7 +45,7 @@ import {
   // If webcam supported, add event listener to button for when user
   // wants to activate it.
   if (hasGetUserMedia()) {
-    enableWebcamButton = document.getElementById("webcamButton");
+    enableWebcamButton = document.getElementById("open_survey");
     enableWebcamButton.addEventListener("click", enableCam);
   } else {
     console.warn("getUserMedia() is not supported by your browser");
