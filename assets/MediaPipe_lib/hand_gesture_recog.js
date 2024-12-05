@@ -1,8 +1,8 @@
-let gestureRecognizer;
-    let webcamElement = document.getElementById('webcam');
-    let gestureMsg = document.getElementById('gesture-msg');
+    let gestureRecognizer;
+    const webcamElement = document.getElementById('webcam');
+    const gestureMsg = document.getElementById('gesture-msg');
     
-    // Set up the webcam feed
+    // Setup webcam
     async function setupWebcam() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -16,13 +16,18 @@ let gestureRecognizer;
 
     // Initialize Gesture Recognizer
     async function initializeGestureRecognizer() {
+      // Ensure FilesetResolver is loaded before GestureRecognizer
       const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm");
+      
+      // Load the Gesture Recognizer task
       gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
         baseOptions: {
           modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
         },
         numHands: 2
       });
+
+      // Configure the recognizer options
       gestureRecognizer.setOptions({
         runningMode: "video",
         minHandDetectionConfidence: 0.5,
@@ -31,7 +36,7 @@ let gestureRecognizer;
       });
     }
 
-    // Function to process the gesture recognition results
+    // Process and display results
     function processResult(gestureRecognitionResult) {
       const gestures = gestureRecognitionResult.gestures;
       
@@ -45,26 +50,28 @@ let gestureRecognizer;
       }
     }
 
-    // Video render loop to process each frame
+    // Rendering and gesture detection loop
     let lastVideoTime = -1;
     function renderLoop() {
-      const video = document.getElementById("webcam");
+      const video = webcamElement;
 
       if (video.currentTime !== lastVideoTime) {
-        const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
-        processResult(gestureRecognitionResult);
+        // Perform gesture recognition for each frame
+        gestureRecognizer.recognizeForVideo(video).then((gestureRecognitionResult) => {
+          processResult(gestureRecognitionResult);
+        });
+
         lastVideoTime = video.currentTime;
       }
 
       requestAnimationFrame(renderLoop);
     }
 
-    // Start the video and gesture recognition process
+    // Start the webcam and gesture recognition
     async function start() {
-      await setupWebcam(); // Setup webcam
+      await setupWebcam(); // Set up the webcam
       await initializeGestureRecognizer(); // Initialize Gesture Recognizer
-      renderLoop(); // Start rendering and processing
+      renderLoop(); // Start the loop to process video frames
     }
 
-    // Start the app
-    start();
+    start(); // Initialize the app
