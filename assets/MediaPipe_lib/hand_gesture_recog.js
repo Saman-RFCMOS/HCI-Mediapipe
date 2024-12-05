@@ -3,7 +3,7 @@ import { FilesetResolver, GestureRecognizer } from 'https://cdn.jsdelivr.net/npm
     async function initializeGestureRecognizer() {
       // Ensure the MediaPipe library is loaded globally
       const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm/"
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
       );
 
       const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
