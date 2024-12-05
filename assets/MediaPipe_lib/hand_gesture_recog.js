@@ -8,7 +8,8 @@ import { FilesetResolver, GestureRecognizer } from 'https://cdn.jsdelivr.net/npm
 
       const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
         baseOptions: {
-          modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+        delegate: null
         },
         numHands: 1
       });
