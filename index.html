@@ -91,20 +91,19 @@
    <!-- Pop-up section-->
     <div id="survey_popup" class="modalx">
     <div class="modalx-content">
-    <div class="modalx-header">
-    <span class="closex">&times;</span>
+      <div class="modalx-header">
+        <span class="closex">&times;</span>
+      </div>
+      <div class="modalx-body">
+        <div id="webcam-container">
+          <video id="video" width="640" height="480" autoplay playsinline></video>
+          <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
+          <div id="gesture-msg"></div>
+        </div>
+        <p>Additional Information</p>
+      </div>
     </div>
-    <div class="modalx-body">
-   <div id="webcam-container">
-    <video id="video" width="640" height="480" autoplay playsinline></video>
-    <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
-    <div id="gesture-msg"></div>
   </div>
-    <p>Some other text...</p>
-    
-    </div>
-    </div>
-    </div>
    <!-- END Pop-up section-->
     
     <!-- Home Section -->
