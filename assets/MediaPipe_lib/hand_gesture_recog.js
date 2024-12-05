@@ -1,4 +1,3 @@
-// Get elements
 let videoElement = document.getElementById('webcam');
 let gestureResultElement = document.getElementById('gestureResult');
 
@@ -13,26 +12,36 @@ hands.setOptions({
 
 // Initialize webcam and canvas for drawing landmarks
 async function setupWebcam() {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
-  });
-  videoElement.srcObject = stream;
-  videoElement.width = 640;
-  videoElement.height = 480;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+    videoElement.srcObject = stream;
+    videoElement.width = 640;
+    videoElement.height = 480;
 
-  // Create and add canvas element for drawing hand landmarks
-  const canvas = document.createElement('canvas');
-  canvas.width = videoElement.width;
-  canvas.height = videoElement.height;
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext('2d');
+    // Check if video is playing
+    videoElement.onplaying = () => {
+      console.log("Webcam video is playing");
+    };
 
-  // Set canvas to overlay on top of the video
-  canvas.style.position = 'absolute';
-  canvas.style.top = 0;
-  canvas.style.left = 0;
+    // Create and add canvas element for drawing hand landmarks
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElement.width;
+    canvas.height = videoElement.height;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
 
-  return ctx;
+    // Set canvas to overlay on top of the video
+    canvas.style.position = 'absolute';
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+
+    return ctx;
+  } catch (err) {
+    console.error("Error accessing webcam:", err);
+    alert("Please allow access to the webcam.");
+  }
 }
 
 // Detect hand gestures and draw landmarks
