@@ -1,6 +1,5 @@
-import { FilesetResolver } from '@mediapipe/tasks-vision';
-
 async function initializeGestureRecognizer() {
+  // No need to import FilesetResolver - it's available globally
   const vision = await FilesetResolver.forVisionTasks(
     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
   );
