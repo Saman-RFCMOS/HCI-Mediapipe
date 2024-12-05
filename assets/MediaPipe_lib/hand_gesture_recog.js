@@ -1,70 +1,75 @@
 import { FilesetResolver, GestureRecognizer } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs';
 
 async function initializeGestureRecognizer() {
-  // Load MediaPipe vision task fileset
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-  );
+  try {
+    // Ensure the MediaPipe library is loaded globally
+    const vision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
+    );
 
-  // Initialize the GestureRecognizer with options
-  const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
-    },
-    numHands: 1
-  });
+    // Create Gesture Recognizer instance with model options
+    const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+      },
+      numHands: 1
+    });
 
-  // Access webcam stream
-  const videoElement = document.getElementById('video');
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: true
-  });
-  videoElement.srcObject = stream;
+    // Initialize video stream (webcam)
+    const videoElement = document.getElementById('video');
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true
+    });
+    videoElement.srcObject = stream;
 
-  // Setup video stream and gesture recognition options
-  gestureRecognizer.setOptions({
-    runningMode: "video"
-  });
+    // Set up recognition in video mode (ensure frames are processed in sync with the video)
+    gestureRecognizer.setOptions({
+      runningMode: "video"  // Continue with "video" mode for real-time frame processing
+    });
 
-  let lastVideoTime = -1;
+    let lastVideoTime = -1;
 
-  // Start frame processing loop
-  function renderLoop() {
-    const video = document.getElementById("video");
+    // Start the render loop
+    function renderLoop() {
+      const video = document.getElementById("video");
 
-    // Ensure the video has enough data and process if current time is updated
-    if (video.readyState === video.HAVE_ENOUGH_DATA && video.currentTime !== lastVideoTime) {
-      const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
+      // Ensure the video has enough data and its time has changed to avoid duplicate frames
+      if (video.readyState === video.HAVE_ENOUGH_DATA && video.currentTime !== lastVideoTime) {
+        // Process video frame for gesture recognition
+        const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(video);
 
-      if (gestureRecognitionResult && gestureRecognitionResult.gestures && gestureRecognitionResult.gestures.length > 0) {
-        processResult(gestureRecognitionResult);
+        // Process recognition result if available
+        if (gestureRecognitionResult) {
+          processResult(gestureRecognitionResult);
+        }
+
+        // Update the last processed time to avoid reprocessing the same frame
+        lastVideoTime = video.currentTime;
       }
 
-      lastVideoTime = video.currentTime;
+      // Request the next frame for animation
+      requestAnimationFrame(renderLoop);
     }
 
-    // Continue requesting next frame
-    requestAnimationFrame(renderLoop);
-  }
+    // Start the render loop to continuously process frames
+    renderLoop();
 
-  renderLoop(); // Start the loop
+  } catch (error) {
+    console.error("Error initializing Gesture Recognizer:", error);
+    alert("Failed to initialize gesture recognition. Please try again.");
+  }
 }
 
+// Start the process when the window loads
 window.onload = initializeGestureRecognizer;
 
 function processResult(result) {
-  // Check if gestures are detected
+  // Ensure we have gesture data and process it
   if (result.gestures && result.gestures.length > 0) {
     const gesture = result.gestures[0].categoryName;
-    const gestureMsgElement = document.getElementById('gesture-msg');
-    
-    // Handle specific gestures
     if (gesture === 'Thumb_Up') {
-      gestureMsgElement.style.display = 'block'; // Show message
-      gestureMsgElement.innerText = 'Thumbs Up Detected!';
-    } else {
-      gestureMsgElement.style.display = 'block'; // Show message
-      gestureMsgElement.innerText = 'Not Detect';
+      // Alert when a "Thumbs Up" gesture is detected
+      window.alert("Thumbs Up Detected!");
     }
   }
 }
