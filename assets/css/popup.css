@@ -11,17 +11,15 @@
   z-index: 1000;
 }
 
-/* Pop-up box styling */
 .popup {
-  background: #fff;
-  width: 90%;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  animation: fadeIn 0.3s ease-out;
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    display: inline-block; 
 }
+
 
 .popup h2 {
   margin: 0 0 10px;
