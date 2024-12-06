@@ -48,9 +48,9 @@ def run_hand_detection():
 
         # Gesture logic
         if is_hand_open and is_facing_camera:
-            return "Hand Open and Facing Camera"
+            return "Hand Open"
         elif is_hand_closed and is_facing_camera:
-            return "Hand Closed and Facing Camera"
+            return "Hand Closed"
         elif thumb_extended and thumb_tip.y < wrist.y and not is_hand_open:
             return "Thumbs Up"
         elif thumb_tip.y > wrist.y and not is_hand_open:
