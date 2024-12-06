@@ -91,5 +91,5 @@ def run_hand_detection():
     cap.release()
     cv2.destroyAllWindows()
 
-# Call the function to run the program
-run_hand_detection()
+# Calling the function
+# run_hand_detection()
