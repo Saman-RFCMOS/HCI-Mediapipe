@@ -1,8 +1,9 @@
+import { FilesetResolver, GestureRecognizer } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs';
 const video = document.getElementById('video');
 const gestureMsg = document.getElementById('gesture-msg');
 
 // Replace with actual model path based on your setup
-const gestureRecognizerModelPath = 'https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task';
+const gestureRecognizerModelPath = 'https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/latest/gesture_recognizer.task';
 
 async function setupGestureRecognizer() {
   // Load MediaPipe Hands solution
