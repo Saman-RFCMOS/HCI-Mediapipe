@@ -1,92 +1,96 @@
-.overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+/* The Modal (background) */
+.modalx {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
-        /* Pop-up box styling */
-        .popup {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            display: inline-block; /* Size adjusts based on content */
-            max-width: 90%; /* Responsive for small screens */
-            width: 400px; /* Default width */
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            opacity: 1;
-            transform: scale(1);
-        }
+/* Modal Content */
+.modalx-content {
+  z-index: 9999; /* Sit on top */
+  position: relative;
+  display: block;
+  justify-content: initial;
+  align-items: initial;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .modalx-content {
+    width: 90%;
+  }
+}
 
-        .popup h2 {
-            margin: 0 0 10px;
-            color: #333;
-        }
+@media (max-width: 480px) {
+  .modalx-content {
+    width: 95%;
+  }
+}
 
-        .popup p {
-            color: #555;
-            margin-bottom: 20px;
-        }
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
 
-        .popup button {
-            background: #2575fc;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-size: 16px;
-        }
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
 
-        .popup button:hover {
-            background: #1a5dc4;
-        }
+/* The Close Button */
+.closex {
+    color: red;
+    float: right;
+    font-size: 36px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid #F00;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+}
 
-        /* Keyframes for fade-in animation */
-        @keyframes fadeIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+.closex:hover,
+.closex:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 
-        /* Responsive design for smaller screens */
-        @media (max-width: 768px) {
-            .popup {
-                width: 90%; /* Expand to most of the screen */
-                padding: 15px;
-            }
+.modalx-header {
+  padding: 2px 16px;
+  color: white;
+  background-image: url('../img/feedback.png');
+  height: 200px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;    
 
-            .popup h2 {
-                font-size: 20px;
-            }
+}
 
-            .popup p {
-                font-size: 14px;
-            }
+.modalx-body {padding: 2px 16px;}
 
-            .popup button {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .popup {
-                width: 100%; /* Take full width */
-                border-radius: 0; /* No border radius for small screens */
-            }
-        }
+.modalx-footer {
+  padding: 2px 16px;
+  background-color: #333333;
+  color: white;
+}
