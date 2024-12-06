@@ -37,7 +37,7 @@ def run_hand_detection():
         middle_extended = middle_tip.y < middle_mcp.y
         ring_extended = ring_tip.y < ring_mcp.y
         pinky_extended = pinky_tip.y < pinky_mcp.y
-
+    
         # Determine if the hand is open or closed
         is_hand_open = all([thumb_extended, index_extended, middle_extended, ring_extended, pinky_extended])
         is_hand_closed = not any([index_extended, middle_extended, ring_extended, pinky_extended])
@@ -46,11 +46,15 @@ def run_hand_detection():
         z_coords = [landmark.z for landmark in hand_landmarks.landmark]
         is_facing_camera = max(z_coords) - min(z_coords) < 0.1  # Low Z variance means the hand is perpendicular
 
-        # Gesture logic
-        if is_hand_open and is_facing_camera:
+         # Detect specific gestures
+        if index_extended and pinky_extended and not middle_extended and not ring_extended:
+            return "Rock and Roll Gesture"
+            
+        elif is_hand_open and is_facing_camera:
             return "Hand Open"
         elif is_hand_closed and is_facing_camera:
             return "Hand Closed"
+            
         elif thumb_extended and thumb_tip.y < wrist.y and not is_hand_open:
             return "Thumbs Up"
         elif thumb_tip.y > wrist.y and not is_hand_open:
@@ -66,11 +70,11 @@ def run_hand_detection():
         if not ret:
             break
 
-        # Flip the image horizontally for a mirror view
+        # Flipping the image for mirrored view
         frame = cv2.flip(frame, 1)
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        # Process the frame with MediaPipe Hands
+        # Check frame with Mediapipe Hands
         results = hands.process(rgb_frame)
 
         if results.multi_hand_landmarks:
