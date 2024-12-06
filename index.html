@@ -58,8 +58,8 @@
         <li><a href="#about"><i class="bi bi-person navicon"></i> About</a></li>
         <li><a href="#portfolio"><i class="bi bi-images navicon"></i> Portfolio</a></li>
         <li><a href="#contact"><i class="bi bi-envelope navicon"></i> Contact</a></li>
-        <li><button onclick="showPopup()"
-            style="padding: 15px 30px; font-size: 18px; border: none; border-radius: 5px; background: #fff; color: #2575fc; cursor: pointer; transition: 0.3s ease;">
+        <li><button id="open_survey"
+            style="text-decoration: none; padding: 10px 10px; border-radius: 10px; background-color: #FFD700; color: black;font-weight:Bold;">
             Your Survey, Your Prize!</button></li>
       </ul>
     </nav>
@@ -69,34 +69,45 @@
   <main class="main">
 
     <!-- Pop-up section-->
-    <div class="overlay" id="popupOverlay">
-      <div class="popup">
-        <div id="main_gesture">Like/Dislike</div>
-        <div id="star_gesture" style="display: none;">Star Gesture</div>
-        <div id="voice_gesture" style="display: none;">Voice feedback</div>
-        <div id="thank_you" style="display: none;">Thank you</div>
+    <div id="survey_popup" class="modalx">
+      <div class="modalx-content">
+        <div class="modalx-header">
+          <span class="closex">&times;</span>
+        </div>
+        <div class="modalx-body">
+          <div id="main_gesture">Like/Dislike</div>
+          <div id="star_gesture" style="display: none;">Star Gesture</div>
+          <div id="voice_gesture" style="display: none;">Voice feedback</div>
+          <div id="thank_you" style="display: none;">Thank you</div>
 
-        <button onclick="showDiv('star_gesture')">Show Star Gesture</button>
-        <button onclick="showDiv('voice_gesture')">Show Voice Feedback</button>
-        <button onclick="showDiv('thank_you')">Show Thank You</button>
 
-        <script>
-          function showDiv(divId) {
-            const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
-            divs.forEach(id => {
-              const div = document.getElementById(id);
-              if (id === divId) {
-                div.style.display = 'block';
-              } else {
-                div.style.display = 'none';
-              }
-            });
-          }
-        </script>
-        <video id="video" width="640" height="480" autoplay playsinline></video>
-        <div id="finger-msg"></div>
-        <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
-        <button onclick="hidePopup()">Close</button>
+          <button onclick="showDiv('star_gesture')">Show Star Gesture</button>
+          <button onclick="showDiv('voice_gesture')">Show Voice Feedback</button>
+          <button onclick="showDiv('thank_you')">Show Thank You</button>
+
+          <script>
+            function showDiv(divId) {
+              const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
+              divs.forEach(id => {
+                const div = document.getElementById(id);
+                if (id === divId) {
+                  div.style.display = 'block';
+                } else {
+                  div.style.display = 'none';
+                }
+              });
+            }
+          </script>
+
+          <div id="webcam-container">
+            <video id="video" width="640" height="480" autoplay playsinline></video>
+            <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
+
+            <div id="gesture-msg"></div>
+
+          </div>
+          <div id="finger-msg"></div>
+        </div>
       </div>
     </div>
     <!-- END Pop-up section-->
@@ -412,6 +423,7 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/popup.js"></script>
+
   <script src="assets/js/main.js"></script>
 
 </body>
