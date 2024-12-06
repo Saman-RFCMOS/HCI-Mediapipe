@@ -63,7 +63,6 @@ async function initializeGestureRecognizer() {
   // Handle results from Mediapipe Hands
   hands.onResults((results) => {
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-      displayElement.innerHTML = ""; // Clear the output container
   
       results.multiHandLandmarks.forEach((landmarks, index) => {
         // Count fingers
@@ -74,9 +73,6 @@ async function initializeGestureRecognizer() {
         const handElement = document.getElementById("gesture-msg");
         handElement.innerText = handInfo;
       });
-    } else {
-      // No hands detected
-      displayElement.innerText = "No hands detected";
     }
   });
   const videoElement = document.getElementById('video');
