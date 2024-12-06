@@ -70,7 +70,7 @@ async function initializeGestureRecognizer() {
   
         // Update display
         const handInfo = `Hand ${index + 1}: ${fingerCount} fingers extended`;
-        const handElement = document.getElementById("gesture-msg");
+        const handElement = document.getElementById("finger-msg");
         handElement.innerText = handInfo;
       });
     }
