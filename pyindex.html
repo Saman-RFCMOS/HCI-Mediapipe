@@ -73,19 +73,16 @@
     const gestureOutput = document.getElementById("gesture_output");
     const enableWebcamButton = document.getElementById("webcamButton");
 
-    // Check if webcam access is supported
     function hasGetUserMedia() {
       return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
     }
 
-    // Start webcam stream when button is clicked
     if (hasGetUserMedia()) {
       enableWebcamButton.addEventListener("click", enableCam);
     } else {
       console.warn("getUserMedia() is not supported by your browser");
     }
 
-    // Enable webcam and start predictions
     function enableCam() {
       if (webcamRunning === true) {
         webcamRunning = false;
@@ -105,7 +102,6 @@
     let lastVideoTime = -1;
     let results;
 
-    // Real-time webcam predictions
     async function predictWebcam() {
       const webcamElement = document.getElementById("webcam");
 
