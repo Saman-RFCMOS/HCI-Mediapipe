@@ -62,6 +62,36 @@ def run_hand_detection():
 
         return "Neutral"
 
+    def count_fingers(hand_landmarks):
+        mp_hands = mp.solutions.hands
+    
+        # Get coordinates of finger tips and lower joints
+        thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+        thumb_ip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_IP]
+    
+        index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+        index_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
+    
+        middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+        middle_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
+    
+        ring_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
+        ring_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP]
+    
+        pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
+        pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
+    
+        # Check if fingers are extended
+        thumb_extended = thumb_tip.y < thumb_ip.y
+        index_extended = index_tip.y < index_mcp.y
+        middle_extended = middle_tip.y < middle_mcp.y
+        ring_extended = ring_tip.y < ring_mcp.y
+        pinky_extended = pinky_tip.y < pinky_mcp.y
+    
+        # Count the number of extended fingers
+        fingers_count = sum([thumb_extended, index_extended, middle_extended, ring_extended, pinky_extended])
+        return fingers_count
+    
     # Start video capture
     cap = cv2.VideoCapture(0)
 
@@ -82,6 +112,10 @@ def run_hand_detection():
                 # Draw hand landmarks on the frame
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
+                # Count fingers
+                fingers_count = count_fingers(hand_landmarks)
+                cv2.putText(frame, f"Fingers: {fingers_count}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                
                 # Detect gesture
                 gesture = detect_gesture(hand_landmarks)
                 cv2.putText(frame, gesture, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
@@ -94,6 +128,8 @@ def run_hand_detection():
 
     cap.release()
     cv2.destroyAllWindows()
+
+# Following the same logic, creating another function for counting the fingers
 
 # Calling the function
 # run_hand_detection()
