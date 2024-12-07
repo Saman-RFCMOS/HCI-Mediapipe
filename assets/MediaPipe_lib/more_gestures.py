@@ -35,6 +35,8 @@ def run_hand_detection():
         #Okay Gesture
         if abs(thumb_tip.x - index_tip.x) < 0.05 and abs(thumb_tip.y - index_tip.y) < 0.05:
             return "Okay Gesture" #when you like the food to much we do that.
+        if index_extended and middle_extended and not ring_extended and not pinky_extended: #win wth 2 fingers.
+             return "V for Victory Gesture"
         return "Neutral"
 
     cap = cv2.VideoCapture(0)
