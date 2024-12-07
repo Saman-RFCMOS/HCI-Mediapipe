@@ -34,7 +34,7 @@ def run_hand_detection():
             return "Stop Gesture" #show your palm like a police stop the trafik..
         #Okay Gesture
         if abs(thumb_tip.x - index_tip.x) < 0.05 and abs(thumb_tip.y - index_tip.y) < 0.05:
-            return "Okay Gesture"
+            return "Okay Gesture" #when you like the food to much we do that.
         return "Neutral"
 
     cap = cv2.VideoCapture(0)
