@@ -60,7 +60,6 @@
   }
 }
 
-/* The Close Button */
 .closex {
   color: red;
   float: right;
@@ -94,7 +93,8 @@
 }
 
 .modalx-body {
-  padding: 2px 16px;
+  padding: 4px 4px;
+  width: auto;
 }
 
 .modalx-footer {
