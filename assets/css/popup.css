@@ -2,7 +2,6 @@
   display: none;
   position: fixed;
   z-index: 9999;
-  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%;
@@ -12,23 +11,16 @@
 }
 
 .modalx-content {
-  z-index: 9999;
-  position: relative;
-  display: block;
-  justify-content: initial;
-  align-items: initial;
-  background-color: #fefefe;
+  background: white;
   margin: auto;
-  padding: 0;
-  border: 1px solid #888;
-  width: 50%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
-  text-align: center;
-
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
