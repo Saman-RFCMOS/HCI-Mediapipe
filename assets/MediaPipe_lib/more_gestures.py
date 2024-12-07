@@ -12,6 +12,7 @@ def run_hand_detection():
         min_tracking_confidence=0.5
     )
 
+    
     def detect_gesture(hand_landmarks):
         thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
         index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
@@ -27,7 +28,7 @@ def run_hand_detection():
 
         #more gestures maybe we need...
         if index_extended and middle_extended and not ring_extended and not pinky_extended:
-            return "Peace Sign"
+            return "Peace Sign" #like a "V" shape
         #stop gestuer
         if index_extended and middle_extended and ring_extended and pinky_extended:
             return "Stop Gesture"
