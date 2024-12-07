@@ -17,6 +17,7 @@
 <body>
   <video id="video" autoplay playsinline style="display: none;"></video>
   <canvas id="output"></canvas>
+
   <script>
     const videoElement = document.getElementById('video');
     const canvasElement = document.getElementById('output');
@@ -60,8 +61,9 @@
     }
 
     function onResults(results) {
-      if (results.multiHandLandmarks) {
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
         for (const landmarks of results.multiHandLandmarks) {
+          // Draw landmarks and connections
           drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 4 });
           drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 });
 
