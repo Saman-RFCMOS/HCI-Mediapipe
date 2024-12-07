@@ -39,7 +39,7 @@ def run_hand_detection():
              return "V for Victory Gesture"
         if abs(thumb_tip.x - index_tip.x) < 0.05 and abs(thumb_tip.y - index_tip.y) < 0.05:
             if not middle_extended and not ring_extended and not pinky_extended:
-                return "Heart Gesture"
+                return "Heart Gesture" #hearth with bringing.
         return "Neutral"
 
     cap = cv2.VideoCapture(0)
