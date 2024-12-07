@@ -31,7 +31,7 @@ def run_hand_detection():
             return "Peace Sign" #like a "V" shape
         #stop gestuer
         if index_extended and middle_extended and ring_extended and pinky_extended:
-            return "Stop Gesture"
+            return "Stop Gesture" #show your palm like a police stop the trafik..
         #Okay Gesture
         if abs(thumb_tip.x - index_tip.x) < 0.05 and abs(thumb_tip.y - index_tip.y) < 0.05:
             return "Okay Gesture"
