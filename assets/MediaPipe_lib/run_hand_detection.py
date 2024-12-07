@@ -63,11 +63,14 @@ def run_hand_detection():
         return "Neutral"
 
     def count_fingers(hand_landmarks):
+
         mp_hands = mp.solutions.hands
     
         # Get coordinates of finger tips and lower joints
         thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
         thumb_ip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_IP]
+        thumb_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_MCP]
+        wrist = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST]
     
         index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
         index_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
@@ -82,7 +85,7 @@ def run_hand_detection():
         pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
     
         # Check if fingers are extended
-        thumb_extended = thumb_tip.y < thumb_ip.y
+        thumb_extended = thumb_tip.x > thumb_ip.x if wrist.x < thumb_tip.x else thumb_tip.x < thumb_ip.x
         index_extended = index_tip.y < index_mcp.y
         middle_extended = middle_tip.y < middle_mcp.y
         ring_extended = ring_tip.y < ring_mcp.y
@@ -114,7 +117,10 @@ def run_hand_detection():
 
                 # Count fingers
                 fingers_count = count_fingers(hand_landmarks)
-                cv2.putText(frame, f"Fingers: {fingers_count}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+                # Move the text to the bottom-left corner
+                text_position = (50, frame.shape[0] - 50)  # Bottom-left corner
+                cv2.putText(frame, f"Fingers: {fingers_count}", text_position, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 
                 # Detect gesture
                 gesture = detect_gesture(hand_landmarks)
