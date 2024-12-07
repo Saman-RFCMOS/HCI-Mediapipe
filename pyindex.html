@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hand Gesture Detection</title>
+  <title>Hand Gesture Detection with Notifications</title>
   <style>
     canvas {
       display: block;
@@ -36,6 +36,11 @@
     });
 
     hands.onResults(onResults);
+
+    // Request notification permission
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
 
     // Function to process video frames
     async function startVideo() {
@@ -72,6 +77,9 @@
           canvasCtx.fillStyle = 'green';
           canvasCtx.font = '24px Arial';
           canvasCtx.fillText(`Gesture: ${gesture}`, 10, 30);
+
+          // Show notification when a gesture is detected
+          showNotification(gesture);
         }
       }
     }
@@ -101,6 +109,12 @@
       if (thumbExtended && !allFingers.slice(1).some(Boolean)) return 'Thumbs Up';
 
       return 'Neutral';
+    }
+
+    function showNotification(gesture) {
+      if (Notification.permission === "granted") {
+        new Notification(`Gesture Detected: ${gesture}`);
+      }
     }
 
     // Start the video stream
