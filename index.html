@@ -73,13 +73,25 @@
       <div class="modalx-content">
         <div class="modalx-header">
           <span class="closex">&times;</span>
+          <div>
+            <h4>Please give us a Gesture feedback</h4>
+            <hr>
+          </div>
         </div>
         <div class="modalx-body">
-          <div id="main_gesture"><video id="video" autoplay playsinline></video>
+          <div id="main_gesture">
+            <div class="LDimage-container">
+              <img src="assets/img/Like.jpg" alt="Like Gesture">
+              <img src="assets/img/dislike.jpg" alt="Dislike Gesture">
+            </div>
             <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
             <div id="finger-msg"></div>
           </div>
-          <div id="star_gesture" style="display: none;">Star Gesture</div>
+          <div id="star_gesture" style="display: none;">
+            <div class="Starimage-container">
+              <img src="assets/img/stars.png" alt="stars Gesture">
+            </div>
+          </div>
           <div id="voice_gesture" style="display: none;">Voice feedback</div>
           <div id="thank_you" style="display: none;">Thank you</div>
 
