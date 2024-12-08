@@ -104,40 +104,40 @@
             const ringExtended = ringTip[1] < landmarks[15][1];
             const pinkyExtended = pinkyTip[1] < landmarks[19][1];
 
-            // Thumb Up: Thumb extended upwards
+            // Detect gestures based on extended fingers and their positions
             if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Thumb Up";
+                return "Thumb Up (Like)";  // Thumb extended, others curled
             }
 
-            // Thumb Down: Thumb pointing downwards
             if (!thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Thumb Down";
+                return "Thumb Down (Dislike)";  // Thumb down, others curled
             }
 
-            // Open Palm: All fingers extended
+            if (indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "1 Finger (number 1)";  // Only index extended
+            }
+
+            if (indexExtended && middleExtended && !ringExtended && !pinkyExtended) {
+                return "2 Fingers (number 2)";  // Index and middle extended
+            }
+
+            if (indexExtended && middleExtended && ringExtended && !pinkyExtended) {
+                return "3 Fingers (number 3)";  // Index, middle, and ring extended
+            }
+
             if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
-                return "Open Palm";
+                return "4 Fingers (number 4)";  // All fingers extended
             }
 
-            // Closed Fist: All fingers curled (not extended)
+            if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
+                return "Open Palm (submit)";  // All fingers extended (open palm)
+            }
+
             if (!indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Closed Fist";
+                return "Closed Fist (close)";  // All fingers curled (closed fist)
             }
 
-            // Count specific gestures (1, 2, 3, 4 extended fingers)
-            const extendedFingers = countExtendedFingers(landmarks);
-            switch (extendedFingers) {
-                case 1:
-                    return "1 Finger";
-                case 2:
-                    return "2 Fingers";
-                case 3:
-                    return "3 Fingers";
-                case 4:
-                    return "4 Fingers";
-                default:
-                    return "Neutral";
-            }
+            return "Neutral";  // Default case if no specific gesture is matched
         }
 
         setupCamera().then(() => {
