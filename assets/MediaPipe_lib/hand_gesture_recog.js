@@ -55,6 +55,33 @@ function enableCam() {
 let lastVideoTime = -1;
 let results;
 
+// Function to count extended fingers
+function countExtendedFingers(landmarks) {
+    let extendedFingers = 0;
+
+    // Check index finger (landmark 8 and 6 for index tip and base)
+    if (landmarks[8].y < landmarks[6].y) {
+        extendedFingers++;
+    }
+
+    // Check middle finger (landmark 12 and 10 for middle tip and base)
+    if (landmarks[12].y < landmarks[10].y) {
+        extendedFingers++;
+    }
+
+    // Check ring finger (landmark 16 and 14 for ring tip and base)
+    if (landmarks[16].y < landmarks[14].y) {
+        extendedFingers++;
+    }
+
+    // Check pinky finger (landmark 20 and 18 for pinky tip and base)
+    if (landmarks[20].y < landmarks[18].y) {
+        extendedFingers++;
+    }
+
+    return extendedFingers;
+}
+
 async function predictWebcam() {
     const webcamElement = document.getElementById("webcam");
 
@@ -86,36 +113,18 @@ async function predictWebcam() {
             lineWidth: 3
         });
         drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
-    }
 
-    if (results.gestures.length > 0) {
-        gestureOutput.style.display = "block";
-        const categoryName = results.gestures[0][0].categoryName;
-        const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
-        const handedness = results.handednesses[0][0].displayName;
-
+        // Count the number of extended fingers
+        const extendedFingers = countExtendedFingers(landmarks);
         let action;
-        switch (categoryName) {
-            case "Pointing_Up":
-                action = 1;
-                break;
-            case "Victory":
-                action = 2;
-                break;
-            case "Thumb_Up":
-                action = "Like";
-                break;
-            case "Thumb_Down":
-                action = "Dislike";
-                break;
-            case "Closed_Fist":
-                action = "Close";
-                break;
-            case "Open_Palm":
-                action = "Submit";
-                break;
-            default:
-                action = "Unknown gesture";
+
+        // Action based on the number of extended fingers
+        if (extendedFingers === 3) {
+            action = "Three Fingers Up";
+        } else if (extendedFingers === 4) {
+            action = "Four Fingers Up";
+        } else {
+            action = "Unknown gesture";
         }
 
         gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
