@@ -10,7 +10,6 @@
             width: 480px;
             height: 360px;
             border: 1px solid black;
-            transform: scaleX(-1); /* Mirroring the video */
         }
 
         #output_canvas {
@@ -23,7 +22,7 @@
         #gesture_output {
             display: none;
             position: absolute;
-            bottom: 100px;
+            bottom: 10px;
             left: 10px;
             color: white;
             background-color: rgba(0, 0, 0, 0.7);
@@ -47,8 +46,7 @@
 <body>
     <video id="webcam" autoplay playsinline></video>
     <canvas id="output_canvas"></canvas>
-    <div>Like / Dislike / 1 / 2/ Close / Submit</div>
-    <div id="gesture_output"></div>
+    <div id="gesture_output"></div><br>
     <button id="webcamButton">ENABLE PREDICTIONS</button>
 
     <script type="module">
@@ -57,6 +55,7 @@
         let gestureRecognizer;
         let runningMode = "IMAGE";
         let webcamRunning = false;
+
 
         const createGestureRecognizer = async () => {
             const vision = await FilesetResolver.forVisionTasks(
@@ -134,20 +133,11 @@
 
             if (results.landmarks) {
                 for (const landmarks of results.landmarks) {
-
-                    const mirroredLandmarks = landmarks.map(landmark => {
-                        return {
-                            ...landmark,
-                            x: canvasElement.width - landmark.x  // Mirroring the x-coordinate
-                        };
-                    });
-
-
-                    drawingUtils.drawConnectors(mirroredLandmarks, GestureRecognizer.HAND_CONNECTIONS, {
+                    drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
                         color: "#00F00F",
                         lineWidth: 3
                     });
-                    drawingUtils.drawLandmarks(mirroredLandmarks, { color: "#FF0000", lineWidth: 1 });
+                    drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
                 }
             }
 
@@ -155,14 +145,7 @@
                 gestureOutput.style.display = "block";
                 const categoryName = results.gestures[0][0].categoryName;
                 const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
-                let handedness = results.handednesses[0][0].displayName;
-
-                // Mirror the handedness since the video is mirrored
-                if (handedness === "Right") {
-                    handedness = "Left";
-                } else if (handedness === "Left") {
-                    handedness = "Right";
-                }
+                const handedness = results.handednesses[0][0].displayName;
 
                 // Map gestures to specific values
                 let action;
@@ -189,7 +172,9 @@
                         action = "Unknown gesture";
                 }
 
+
                 gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
+
             } else {
                 gestureOutput.style.display = "none";
             }
