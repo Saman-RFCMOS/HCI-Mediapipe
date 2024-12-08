@@ -98,7 +98,6 @@ async function predictWebcam() {
 
         let action;
 
-        // Detect gestures using the provided categoryName or manual landmark analysis
         switch (categoryName) {
             case "Pointing_Up":
                 action = "1 Finger";
@@ -122,20 +121,31 @@ async function predictWebcam() {
                 // Custom gesture detection for 3 and 4 fingers
                 const landmarks = results.landmarks[0];
 
-                function isFingerExtended(fingerId) {
-                    // Adjust threshold based on calibration
-                    const fingerAngle = getFingerAngle(fingerId); // Replace with actual method
-                    const isExtended = fingerAngle > threshold;  // Define a reliable threshold
-                    console.log(`Finger ${fingerId} Extended:`, isExtended);
-                    return isExtended;
-            }
+                function getAngle(p1, p2, p3) {
+                    const dx1 = p1.x - p2.x;
+                    const dy1 = p1.y - p2.y;
+                    const dx2 = p3.x - p2.x;
+                    const dy2 = p3.y - p2.y;
+                    const dot = dx1 * dx2 + dy1 * dy2;
+                    const mag1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+                    const mag2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                    return Math.acos(dot / (mag1 * mag2)) * (180 / Math.PI);  // angle in degrees
+                }
+
+                function isFingerExtended(fingerIndex) {
+                    const base = landmarks[GestureRecognizer.FINGER_BASE[fingerIndex]];
+                    const middle = landmarks[GestureRecognizer.FINGER_MIDDLE[fingerIndex]];
+                    const tip = landmarks[GestureRecognizer.FINGER_TIP[fingerIndex]];
+                    const angle = getAngle(base, middle, tip);
+                    return angle > 160;  // Adjust the threshold as needed for extension
+                }
 
                 const extendedFingers = [
-                    isFingerExtended(0),
+                    isFingerExtended(0), // Thumb
                     isFingerExtended(1), // Index
                     isFingerExtended(2), // Middle
                     isFingerExtended(3), // Ring
-                    isFingerExtended(4), // Pinky
+                    isFingerExtended(4)  // Pinky
                 ];
 
                 const extendedCount = extendedFingers.filter(Boolean).length;
@@ -144,8 +154,6 @@ async function predictWebcam() {
                     action = "3 Fingers";
                 } else if (extendedCount === 4) {
                     action = "4 Fingers";
-                } else if (extendedCount === 5) {
-                    action = "5 Fingers";
                 } else {
                     action = "Unknown gesture";
                 }
