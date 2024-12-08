@@ -18,6 +18,12 @@ import { GestureRecognizer, FilesetResolver, DrawingUtils } from "https://cdn.js
                 runningMode: runningMode
             });
         };
+        const hands = new mpHands.Hands({
+          maxNumHands: 1, 
+          minDetectionConfidence: 0.5,
+          minTrackingConfidence: 0.5
+        });
+
         createGestureRecognizer();
 
         const videoElement = document.getElementById("webcam");
