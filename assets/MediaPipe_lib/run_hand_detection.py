@@ -32,7 +32,8 @@ def run_hand_detection():
         pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
 
         # Check if fingers are extended
-        thumb_extended = thumb_tip.y < thumb_ip.y
+        #thumb_extended = thumb_tip.y < thumb_ip.y
+        thumb_extended = thumb_tip.x > thumb_ip.x if wrist.x < thumb_tip.x else thumb_tip.x < thumb_ip.x
         index_extended = index_tip.y < index_mcp.y
         middle_extended = middle_tip.y < middle_mcp.y
         ring_extended = ring_tip.y < ring_mcp.y
