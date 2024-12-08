@@ -46,17 +46,21 @@
 
         async function detectGestures() {
             const model = await handpose.load(); // Load the handpose model
+            console.log('Handpose model loaded.');
 
             const detectHands = async () => {
                 const predictions = await model.estimateHands(video); // Estimate hands in the video frame
 
                 if (predictions.length > 0) {
+                    console.log('Hand detected with landmarks:', predictions);
                     const landmarks = predictions[0].landmarks; // Get the hand landmarks
                     const fingersExtended = countExtendedFingers(landmarks);
                     const gesture = detectGesture(landmarks);
 
                     fingerCount.innerText = `Fingers: ${fingersExtended}`;
                     gestureText.innerText = `Gesture: ${gesture}`;
+                } else {
+                    gestureText.innerText = 'No hand detected';
                 }
 
                 requestAnimationFrame(detectHands); // Keep detecting hands
@@ -109,8 +113,11 @@
             return "Neutral";
         }
 
-        setupCamera();
-        detectGestures();
+        setupCamera().then(() => {
+            detectGestures();
+        }).catch(err => {
+            console.error('Error setting up the camera: ', err);
+        });
     </script>
 </body>
 </html>
