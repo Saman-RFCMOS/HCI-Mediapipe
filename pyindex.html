@@ -144,8 +144,11 @@
 
         gestureOutput.innerText = 'GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}';
         if (categoryName === "Pointing_Up") {
-    categoryName = "1";
-}
+    window.alret("One 1");
+        }
+        if (categoryName === "Victory") {
+    window.alret("Two 2");
+        }
       } else {
         gestureOutput.style.display = "none";
       }
