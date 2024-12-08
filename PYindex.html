@@ -54,11 +54,10 @@
                 if (predictions.length > 0) {
                     console.log('Hand detected with landmarks:', predictions);
                     const landmarks = predictions[0].landmarks; // Get the hand landmarks
-                    const fingersExtended = countExtendedFingers(landmarks);
                     const gesture = detectGesture(landmarks);
 
-                    fingerCount.innerText = `Fingers: ${fingersExtended}`;
                     gestureText.innerText = `Gesture: ${gesture}`;
+                    fingerCount.innerText = `Fingers: ${countExtendedFingers(landmarks)}`;
                 } else {
                     gestureText.innerText = 'No hand detected';
                 }
@@ -71,10 +70,15 @@
         function countExtendedFingers(landmarks) {
             let extendedFingers = 0;
 
-            const thumbExtended = landmarks[4][0] > landmarks[3][0];
+            // Thumb (Extended if tip is up)
+            const thumbExtended = landmarks[4][1] < landmarks[3][1];
+            // Index (Extended if tip is up)
             const indexExtended = landmarks[8][1] < landmarks[6][1];
+            // Middle (Extended if tip is up)
             const middleExtended = landmarks[12][1] < landmarks[10][1];
+            // Ring (Extended if tip is up)
             const ringExtended = landmarks[16][1] < landmarks[14][1];
+            // Pinky (Extended if tip is up)
             const pinkyExtended = landmarks[20][1] < landmarks[18][1];
 
             extendedFingers += thumbExtended ? 1 : 0;
@@ -100,17 +104,40 @@
             const ringExtended = ringTip[1] < landmarks[15][1];
             const pinkyExtended = pinkyTip[1] < landmarks[19][1];
 
-            if (indexExtended && pinkyExtended && !middleExtended && !ringExtended) {
-                return "Rock and Roll Gesture";
-            } else if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Thumbs Up";
-            } else if (!thumbExtended && indexExtended && middleExtended && ringExtended && pinkyExtended) {
-                return "Hand Open";
-            } else if (!indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Hand Closed";
+            // Thumb Up: Thumb extended upwards
+            if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "Thumb Up";
             }
 
-            return "Neutral";
+            // Thumb Down: Thumb pointing downwards
+            if (!thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "Thumb Down";
+            }
+
+            // Open Palm: All fingers extended
+            if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
+                return "Open Palm";
+            }
+
+            // Closed Fist: All fingers curled (not extended)
+            if (!indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "Closed Fist";
+            }
+
+            // Count specific gestures (1, 2, 3, 4 extended fingers)
+            const extendedFingers = countExtendedFingers(landmarks);
+            switch (extendedFingers) {
+                case 1:
+                    return "1 Finger";
+                case 2:
+                    return "2 Fingers";
+                case 3:
+                    return "3 Fingers";
+                case 4:
+                    return "4 Fingers";
+                default:
+                    return "Neutral";
+            }
         }
 
         setupCamera().then(() => {
