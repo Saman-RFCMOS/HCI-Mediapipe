@@ -91,18 +91,26 @@
         }
 
         function detectGesture(landmarks) {
-            const thumbTip = landmarks[4];
-            const indexTip = landmarks[8];
-            const middleTip = landmarks[12];
-            const ringTip = landmarks[16];
-            const pinkyTip = landmarks[20];
-            const wrist = landmarks[0];
+            // Positions of key landmarks for each finger
+            const wrist = landmarks[0]; // WRIST
+            const thumbTip = landmarks[4]; // THUMB_TIP
+            const indexTip = landmarks[8]; // INDEX_FINGER_TIP
+            const middleTip = landmarks[12]; // MIDDLE_FINGER_TIP
+            const ringTip = landmarks[16]; // RING_FINGER_TIP
+            const pinkyTip = landmarks[20]; // PINKY_TIP
 
-            const thumbExtended = thumbTip[1] < wrist[1];
-            const indexExtended = indexTip[1] < landmarks[7][1];
-            const middleExtended = middleTip[1] < landmarks[11][1];
-            const ringExtended = ringTip[1] < landmarks[15][1];
-            const pinkyExtended = pinkyTip[1] < landmarks[19][1];
+            const thumbMCP = landmarks[2]; // THUMB_MCP
+            const indexMCP = landmarks[5]; // INDEX_FINGER_MCP
+            const middleMCP = landmarks[9]; // MIDDLE_FINGER_MCP
+            const ringMCP = landmarks[13]; // RING_FINGER_MCP
+            const pinkyMCP = landmarks[17]; // PINKY_MCP
+
+            // Conditions for finger extension:
+            const thumbExtended = thumbTip[1] < thumbMCP[1]; // Thumb is extended if tip is above MCP
+            const indexExtended = indexTip[1] < indexMCP[1]; // Index is extended if tip is above MCP
+            const middleExtended = middleTip[1] < middleMCP[1]; // Middle is extended if tip is above MCP
+            const ringExtended = ringTip[1] < ringMCP[1]; // Ring is extended if tip is above MCP
+            const pinkyExtended = pinkyTip[1] < pinkyMCP[1]; // Pinky is extended if tip is above MCP
 
             // Detect gestures based on extended fingers and their positions
             if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
