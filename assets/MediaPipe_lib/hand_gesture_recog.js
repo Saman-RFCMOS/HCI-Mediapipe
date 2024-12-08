@@ -122,13 +122,11 @@ async function predictWebcam() {
                 // Custom gesture detection for 3 and 4 fingers
                 const landmarks = results.landmarks[0];
 
-                function isFingerExtended(fingerIndex) {
-                    const base = landmarks[GestureRecognizer.FINGER_BASE[fingerIndex]];
-                    const middle = landmarks[GestureRecognizer.FINGER_MIDDLE[fingerIndex]];
-                    const tip = landmarks[GestureRecognizer.FINGER_TIP[fingerIndex]];
-                    const angle = getAngle(base, middle, tip);
-                    return angle > 160;  // Adjust the threshold as needed for extension
-                }
+                const isFingerExtended = (fingerIndex) => {
+                    const tip = landmarks[fingerIndex * 4];
+                    const pip = landmarks[fingerIndex * 4 - 1];
+                    return tip.y < pip.y; // Tip is above PIP for a typical "up" hand orientation
+                };
 
                 const extendedFingers = [
                     isFingerExtended(1), // Index
