@@ -147,8 +147,7 @@
                 const categoryName = results.gestures[0][0].categoryName;
                 const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
                 const handedness = results.handednesses[0][0].displayName;
-
-                // Map gestures to specific values
+                
                 let action;
                 switch (categoryName) {
                     case "Pointing_Up":
