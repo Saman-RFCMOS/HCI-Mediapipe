@@ -1,4 +1,8 @@
-import { GestureRecognizer, FilesetResolver, DrawingUtils } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+import {
+    GestureRecognizer,
+    FilesetResolver,
+    DrawingUtils
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
 
 let gestureRecognizer;
 let runningMode = "IMAGE";
@@ -56,8 +60,6 @@ let lastVideoTime = -1;
 let results;
 
 async function predictWebcam() {
-    const webcamElement = document.getElementById("webcam");
-
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";
         await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
@@ -73,9 +75,9 @@ async function predictWebcam() {
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
     canvasElement.style.height = "360px";
-    webcamElement.style.height = "360px";
+    videoElement.style.height = "360px";
     canvasElement.style.width = "480px";
-    webcamElement.style.width = "480px";
+    videoElement.style.width = "480px";
 
     const drawingUtils = new DrawingUtils(canvasCtx);
 
@@ -95,12 +97,14 @@ async function predictWebcam() {
         const handedness = results.handednesses[0][0].displayName;
 
         let action;
+
+        // Detect gestures using the provided categoryName or manual landmark analysis
         switch (categoryName) {
             case "Pointing_Up":
-                action = 1;
+                action = "1 Finger";
                 break;
             case "Victory":
-                action = 2;
+                action = "2 Fingers";
                 break;
             case "Thumb_Up":
                 action = "Like";
@@ -115,10 +119,36 @@ async function predictWebcam() {
                 action = "Submit";
                 break;
             default:
-                action = "Unknown gesture";
+                // Custom gesture detection for 3 and 4 fingers
+                const landmarks = results.landmarks[0];
+
+                function isFingerExtended(fingerIndex) {
+                    const base = landmarks[GestureRecognizer.FINGER_BASE[fingerIndex]];
+                    const middle = landmarks[GestureRecognizer.FINGER_MIDDLE[fingerIndex]];
+                    const tip = landmarks[GestureRecognizer.FINGER_TIP[fingerIndex]];
+                    const angle = getAngle(base, middle, tip);
+                    return angle > 160;  // Adjust the threshold as needed for extension
+                }
+
+                const extendedFingers = [
+                    isFingerExtended(1), // Index
+                    isFingerExtended(2), // Middle
+                    isFingerExtended(3), // Ring
+                    isFingerExtended(4), // Pinky
+                ];
+
+                const extendedCount = extendedFingers.filter(Boolean).length;
+
+                if (extendedCount === 3) {
+                    action = "3 Fingers";
+                } else if (extendedCount === 4) {
+                    action = "4 Fingers";
+                } else {
+                    action = "Unknown gesture";
+                }
         }
 
-        gestureOutput.innerText = Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness};
+        gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
     } else {
         gestureOutput.style.display = "none";
     }
