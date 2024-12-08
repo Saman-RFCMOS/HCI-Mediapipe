@@ -139,9 +139,9 @@ async function predictWebcam() {
 
                 const extendedCount = extendedFingers.filter(Boolean).length;
 
-                if (extendedCount === 2) {
+                if (extendedCount === 3) {
                     action = "3 Fingers";
-                } else if (extendedCount === 3) {
+                } else if (extendedCount === 4) {
                     action = "4 Fingers";
                 } else {
                     action = "Unknown gesture";
