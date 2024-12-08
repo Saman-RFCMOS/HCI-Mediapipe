@@ -106,50 +106,41 @@
             const middleExtended = middleTip[1] < middleMCP[1]; 
             const ringExtended = ringTip[1] < ringMCP[1]; 
             const pinkyExtended = pinkyTip[1] < pinkyMCP[1]; 
-
+            
             if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Thumb Up (Like)"; // Thumb extended, others curled
+                return "Thumb Up (Like)";  // Thumb extended, others curled
             }
-            
+
             if (!thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "Thumb Down (Dislike)"; // Thumb down, others curled
+                return "Thumb Down (Dislike)";  // Thumb down, others curled
             }
-            
-            if (indexExtended && middleExtended && ringExtended && pinkyExtended && !thumbExtended) {
-                return "Open Palm (submit)"; // All fingers extended (open palm)
+
+            if (indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "1 Finger (number 1)";  // Only index extended, thumb curled
             }
-            
-            if (!indexExtended && !middleExtended && !ringExtended && !pinkyExtended && !thumbExtended) {
-                return "Closed Fist (close)"; // All fingers curled (closed fist)
+
+            if (indexExtended && middleExtended && !ringExtended && !pinkyExtended) {
+                return "2 Fingers (number 2)";  // Index and middle extended, thumb curled
             }
-            
-            // Count the number of extended fingers
-            const fingersUp = thumbExtended + indexExtended + middleExtended + ringExtended + pinkyExtended;
-            
-            switch (fingersUp) {
-                case 1:
-                    if (indexExtended) {
-                        return "1 Finger (number 1)"; // Only index extended
-                    }
-                    break;
-                case 2:
-                    if (indexExtended && middleExtended) {
-                        return "2 Fingers (number 2)"; // Index and middle extended
-                    }
-                    break;
-                case 3:
-                    if (indexExtended && middleExtended && ringExtended) {
-                        return "3 Fingers (number 3)"; // Index, middle, and ring extended
-                    }
-                    break;
-                case 4:
-                    if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
-                        return "4 Fingers (number 4)"; // All fingers extended
-                    }
-                    break;
-                default:
-                    return "Neutral"; // Catch-all for other states
+
+            if (indexExtended && middleExtended && ringExtended && !pinkyExtended) {
+                return "3 Fingers (number 3)";  // Index, middle, and ring extended, thumb curled
             }
+
+            if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
+                return "4 Fingers (number 4)";  // All fingers extended, thumb curled
+            }
+
+            if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
+                return "Open Palm (submit)";  // All fingers extended (open palm)
+            }
+
+            if (!indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "Closed Fist (close)";  // All fingers curled (closed fist)
+            }
+
+            return "Neutral";  
+        }
 
         setupCamera().then(() => {
             detectGestures();
