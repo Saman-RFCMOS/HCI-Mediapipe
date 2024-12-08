@@ -121,20 +121,20 @@
                 return "Thumb Down (Dislike)";  // Thumb down, others curled
             }
 
-            if (indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
-                return "1 Finger (number 1)";  // Only index extended
+            if (!thumbExtended && indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "1 Finger (number 1)";  // Only index extended, thumb curled
             }
 
-            if (indexExtended && middleExtended && !ringExtended && !pinkyExtended) {
-                return "2 Fingers (number 2)";  // Index and middle extended
+            if (!thumbExtended && indexExtended && middleExtended && !ringExtended && !pinkyExtended) {
+                return "2 Fingers (number 2)";  // Index and middle extended, thumb curled
             }
 
-            if (indexExtended && middleExtended && ringExtended && !pinkyExtended) {
-                return "3 Fingers (number 3)";  // Index, middle, and ring extended
+            if (!thumbExtended && indexExtended && middleExtended && ringExtended && !pinkyExtended) {
+                return "3 Fingers (number 3)";  // Index, middle, and ring extended, thumb curled
             }
 
-            if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
-                return "4 Fingers (number 4)";  // All fingers extended
+            if (!thumbExtended && indexExtended && middleExtended && ringExtended && pinkyExtended) {
+                return "4 Fingers (number 4)";  // All fingers extended, thumb curled
             }
 
             if (indexExtended && middleExtended && ringExtended && pinkyExtended) {
