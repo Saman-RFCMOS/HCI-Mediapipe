@@ -142,10 +142,10 @@
         const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
         const handedness = results.handednesses[0][0].displayName;
 
-        gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
-        if (categoryName === "Thumb_Up") {
-    alert("Thumbs Up gesture detected!");
-  }
+        gestureOutput.innerText = 'GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}';
+        if (categoryName === "Pointing_Up") {
+    categoryName = "1";
+}
       } else {
         gestureOutput.style.display = "none";
       }
