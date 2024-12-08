@@ -137,11 +137,10 @@ async function predictWebcam() {
                     const middle = landmarks[GestureRecognizer.FINGER_MIDDLE[fingerIndex]];
                     const tip = landmarks[GestureRecognizer.FINGER_TIP[fingerIndex]];
                     const angle = getAngle(base, middle, tip);
-                    return angle > 160;  // Adjust the threshold as needed for extension
+                    return angle > 100;  // Adjust the threshold as needed for extension
                 }
 
                 const extendedFingers = [
-                    isFingerExtended(0), // Thumb
                     isFingerExtended(1), // Index
                     isFingerExtended(2), // Middle
                     isFingerExtended(3), // Ring
