@@ -131,6 +131,7 @@ async function predictWebcam() {
             }
 
                 const extendedFingers = [
+                    isFingerExtended(0),
                     isFingerExtended(1), // Index
                     isFingerExtended(2), // Middle
                     isFingerExtended(3), // Ring
@@ -143,6 +144,8 @@ async function predictWebcam() {
                     action = "3 Fingers";
                 } else if (extendedCount === 4) {
                     action = "4 Fingers";
+                } else if (extendedCount === 5) {
+                    action = "5 Fingers";
                 } else {
                     action = "Unknown gesture";
                 }
