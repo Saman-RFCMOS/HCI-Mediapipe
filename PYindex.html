@@ -6,7 +6,7 @@
     <title>Hand Gesture Detection</title>
     <style>
         #video {
-            transform: scaleX(-1); /* Mirrored view */
+            transform: scaleX(-1); 
         }
         #gestureText {
             position: absolute;
@@ -45,15 +45,14 @@
         }
 
         async function detectGestures() {
-            const model = await handpose.load(); // Load the handpose model
+            const model = await handpose.load();
             console.log('Handpose model loaded.');
 
             const detectHands = async () => {
-                const predictions = await model.estimateHands(video); // Estimate hands in the video frame
-
+                const predictions = await model.estimateHands(video);
                 if (predictions.length > 0) {
                     console.log('Hand detected with landmarks:', predictions);
-                    const landmarks = predictions[0].landmarks; // Get the hand landmarks
+                    const landmarks = predictions[0].landmarks; 
                     const gesture = detectGesture(landmarks);
 
                     gestureText.innerText = `Gesture: ${gesture}`;
@@ -70,15 +69,11 @@
         function countExtendedFingers(landmarks) {
             let extendedFingers = 0;
 
-            // Thumb (Extended if tip is up)
+          
             const thumbExtended = landmarks[4][1] < landmarks[3][1];
-            // Index (Extended if tip is up)
             const indexExtended = landmarks[8][1] < landmarks[6][1];
-            // Middle (Extended if tip is up)
             const middleExtended = landmarks[12][1] < landmarks[10][1];
-            // Ring (Extended if tip is up)
             const ringExtended = landmarks[16][1] < landmarks[14][1];
-            // Pinky (Extended if tip is up)
             const pinkyExtended = landmarks[20][1] < landmarks[18][1];
 
             extendedFingers += thumbExtended ? 1 : 0;
@@ -106,13 +101,12 @@
             const pinkyMCP = landmarks[17]; // PINKY_MCP
 
             // Conditions for finger extension:
-            const thumbExtended = thumbTip[1] < thumbMCP[1]; // Thumb is extended if tip is above MCP
-            const indexExtended = indexTip[1] < indexMCP[1]; // Index is extended if tip is above MCP
-            const middleExtended = middleTip[1] < middleMCP[1]; // Middle is extended if tip is above MCP
-            const ringExtended = ringTip[1] < ringMCP[1]; // Ring is extended if tip is above MCP
-            const pinkyExtended = pinkyTip[1] < pinkyMCP[1]; // Pinky is extended if tip is above MCP
+            const thumbExtended = thumbTip[1] < thumbMCP[1]; 
+            const indexExtended = indexTip[1] < indexMCP[1]; 
+            const middleExtended = middleTip[1] < middleMCP[1]; 
+            const ringExtended = ringTip[1] < ringMCP[1]; 
+            const pinkyExtended = pinkyTip[1] < pinkyMCP[1]; 
 
-            // Detect gestures based on extended fingers and their positions
             if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
                 return "Thumb Up (Like)";  // Thumb extended, others curled
             }
@@ -145,7 +139,7 @@
                 return "Closed Fist (close)";  // All fingers curled (closed fist)
             }
 
-            return "Neutral";  // Default case if no specific gesture is matched
+            return "Neutral";  
         }
 
         setupCamera().then(() => {
