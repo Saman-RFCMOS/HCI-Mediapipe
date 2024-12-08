@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Gesture Detection</title>
+    <style>
+        #video {
+            transform: scaleX(-1); /* Mirrored view */
+        }
+        #gestureText {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: green;
+        }
+        #fingerCount {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <div id="gestureText"></div>
+    <div id="fingerCount"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+
+    <script>
+        const video = document.getElementById('video');
+        const gestureText = document.getElementById('gestureText');
+        const fingerCount = document.getElementById('fingerCount');
+        
+        async function setupCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+            video.srcObject = stream;
+        }
+
+        async function detectGestures() {
+            const model = await handpose.load(); // Load the handpose model
+
+            const detectHands = async () => {
+                const predictions = await model.estimateHands(video); // Estimate hands in the video frame
+
+                if (predictions.length > 0) {
+                    const landmarks = predictions[0].landmarks; // Get the hand landmarks
+                    const fingersExtended = countExtendedFingers(landmarks);
+                    const gesture = detectGesture(landmarks);
+
+                    fingerCount.innerText = `Fingers: ${fingersExtended}`;
+                    gestureText.innerText = `Gesture: ${gesture}`;
+                }
+
+                requestAnimationFrame(detectHands); // Keep detecting hands
+            };
+            detectHands();
+        }
+
+        function countExtendedFingers(landmarks) {
+            let extendedFingers = 0;
+
+            const thumbExtended = landmarks[4][0] > landmarks[3][0];
+            const indexExtended = landmarks[8][1] < landmarks[6][1];
+            const middleExtended = landmarks[12][1] < landmarks[10][1];
+            const ringExtended = landmarks[16][1] < landmarks[14][1];
+            const pinkyExtended = landmarks[20][1] < landmarks[18][1];
+
+            extendedFingers += thumbExtended ? 1 : 0;
+            extendedFingers += indexExtended ? 1 : 0;
+            extendedFingers += middleExtended ? 1 : 0;
+            extendedFingers += ringExtended ? 1 : 0;
+            extendedFingers += pinkyExtended ? 1 : 0;
+
+            return extendedFingers;
+        }
+
+        function detectGesture(landmarks) {
+            const thumbTip = landmarks[4];
+            const indexTip = landmarks[8];
+            const middleTip = landmarks[12];
+            const ringTip = landmarks[16];
+            const pinkyTip = landmarks[20];
+            const wrist = landmarks[0];
+
+            const thumbExtended = thumbTip[1] < wrist[1];
+            const indexExtended = indexTip[1] < landmarks[7][1];
+            const middleExtended = middleTip[1] < landmarks[11][1];
+            const ringExtended = ringTip[1] < landmarks[15][1];
+            const pinkyExtended = pinkyTip[1] < landmarks[19][1];
+
+            if (indexExtended && pinkyExtended && !middleExtended && !ringExtended) {
+                return "Rock and Roll Gesture";
+            } else if (thumbExtended && !indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "Thumbs Up";
+            } else if (!thumbExtended && indexExtended && middleExtended && ringExtended && pinkyExtended) {
+                return "Hand Open";
+            } else if (!indexExtended && !middleExtended && !ringExtended && !pinkyExtended) {
+                return "Hand Closed";
+            }
+
+            return "Neutral";
+        }
+
+        setupCamera();
+        detectGestures();
+    </script>
+</body>
+</html>
