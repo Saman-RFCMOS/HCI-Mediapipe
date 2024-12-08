@@ -10,7 +10,7 @@
             width: 480px;
             height: 360px;
             border: 1px solid black;
-            transform: scaleX(-1); 
+            transform: scaleX(-1); /* Mirroring the video */
         }
 
         #output_canvas {
@@ -134,11 +134,20 @@
 
             if (results.landmarks) {
                 for (const landmarks of results.landmarks) {
-                    drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+
+                    const mirroredLandmarks = landmarks.map(landmark => {
+                        return {
+                            ...landmark,
+                            x: canvasElement.width - landmark.x  // Mirroring the x-coordinate
+                        };
+                    });
+
+
+                    drawingUtils.drawConnectors(mirroredLandmarks, GestureRecognizer.HAND_CONNECTIONS, {
                         color: "#00F00F",
                         lineWidth: 3
                     });
-                    drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
+                    drawingUtils.drawLandmarks(mirroredLandmarks, { color: "#FF0000", lineWidth: 1 });
                 }
             }
 
@@ -148,7 +157,7 @@
                 const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
                 let handedness = results.handednesses[0][0].displayName;
 
- 
+                // Mirror the handedness since the video is mirrored
                 if (handedness === "Right") {
                     handedness = "Left";
                 } else if (handedness === "Left") {
@@ -181,7 +190,6 @@
                 }
 
                 gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
-
             } else {
                 gestureOutput.style.display = "none";
             }
