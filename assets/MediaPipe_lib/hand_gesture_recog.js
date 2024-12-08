@@ -1,159 +1,134 @@
-import { FilesetResolver, GestureRecognizer } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs';
+import { GestureRecognizer, FilesetResolver, DrawingUtils } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
 
-async function initializeGestureRecognizer() {
-  // Ensure the MediaPipe library is loaded globally
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-  );
-
-  const hands = new Hands({
-    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
-  });
-  
-  hands.setOptions({
-    maxNumHands: 1,
-    modelComplexity: 1,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7,
-  });
-
-  function countExtendedFingers(landmarks) {
-    const wrist = landmarks[0]; // Wrist landmark
-    const fingers = [
-      { tip: 4, base: 3, isThumb: true }, // Thumb
-      { tip: 8, base: 6, isThumb: false }, // Index finger
-      { tip: 12, base: 10, isThumb: false }, // Middle finger
-      { tip: 16, base: 14, isThumb: false }, // Ring finger
-      { tip: 20, base: 18, isThumb: false }, // Pinky finger
-    ];
-  
-    let extendedCount = 0;
-  
-    fingers.forEach((finger) => {
-      const tip = landmarks[finger.tip];
-      const base = landmarks[finger.base];
-  
-      if (finger.isThumb) {
-        // Thumb-specific logic: Check distance from the wrist
-        const tipToWristDistance = Math.sqrt(
-          Math.pow(tip.x - wrist.x, 2) +
-            Math.pow(tip.y - wrist.y, 2) +
-            Math.pow(tip.z - wrist.z, 2)
-        );
-        const baseToWristDistance = Math.sqrt(
-          Math.pow(base.x - wrist.x, 2) +
-            Math.pow(base.y - wrist.y, 2) +
-            Math.pow(base.z - wrist.z, 2)
-        );
-  
-        if (tipToWristDistance > baseToWristDistance + 0.1) {
-          extendedCount++;
-        }
-      } else {
-        // Other fingers: Check if the tip is above the base in Y-axis
-        if (tip.y < base.y) {
-          extendedCount++;
-        }
-      }
-    });
-  
-    return extendedCount;
-  }
-
-  // Handle results from Mediapipe Hands
-  hands.onResults((results) => {
-    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-  
-      results.multiHandLandmarks.forEach((landmarks, index) => {
-        // Count fingers
-        const fingerCount = countExtendedFingers(landmarks);
-  
-        // Update display
-        const handInfo = `Hand ${index + 1}: ${fingerCount} fingers extended`;
-        const handElement = document.getElementById("finger-msg");
-        handElement.innerText = handInfo;
-      });
-    }
-  });
-  const videoElement = document.getElementById('video');
-  // Initialize the camera
-  const camera = new Camera(videoElement, {
-    onFrame: async () => {
-      await hands.send({ image: videoElement });
-    },
-    width: 640,
-    height: 480,
-  });
-  
-  camera.start().catch((err) => {
-    console.error("Camera initialization error:", err);
-    displayElement.innerText = "Error initializing camera.";
-  });
+        let gestureRecognizer;
+        let runningMode = "IMAGE";
+        let webcamRunning = false;
 
 
-  // Create Gesture Recognizer instance with model options
-  const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath: "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/latest/gesture_recognizer.task"
-    },
-    numHands: 1
-  });
+        const createGestureRecognizer = async () => {
+            const vision = await FilesetResolver.forVisionTasks(
+                "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+            );
+            gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+                baseOptions: {
+                    modelAssetPath:
+                        "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
+                    delegate: "GPU"
+                },
+                runningMode: runningMode
+            });
+        };
+        createGestureRecognizer();
 
-  // Initialize video stream (webcam)
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: true
-  });
-  videoElement.srcObject = stream;
+        const videoElement = document.getElementById("webcam");
+        const canvasElement = document.getElementById("output_canvas");
+        const canvasCtx = canvasElement.getContext("2d");
+        const gestureOutput = document.getElementById("gesture_output");
+        const enableWebcamButton = document.getElementById("open_survey");
 
-  // Wait until the video element is ready
-  videoElement.addEventListener('loadeddata', () => {
-    console.log('Video stream is ready');
-    // Start the render loop
-    renderLoop();
-  });
-
-  // Set up recognition in video mode
-  gestureRecognizer.setOptions({
-    runningMode: "video" // Real-time frame processing
-  });
-
-  let lastVideoTime = -1;
-
-  // Render loop for real-time gesture recognition
-  function renderLoop() {
-    if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA && videoElement.currentTime !== lastVideoTime) {
-      try {
-        // Process the current video frame with timestamp
-        const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(videoElement, videoElement.currentTime * 1000);
-
-        if (gestureRecognitionResult) {
-          processResult(gestureRecognitionResult);
+        function hasGetUserMedia() {
+            return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
         }
 
-        // Update the last processed time
-        lastVideoTime = videoElement.currentTime;
-      } catch (error) {
-        console.error("Error during gesture recognition:", error);
-      }
-    }
+        if (hasGetUserMedia()) {
+            enableWebcamButton.addEventListener("click", enableCam);
+        } else {
+            console.warn("getUserMedia() is not supported by your browser");
+        }
 
-    // Request the next frame
-    requestAnimationFrame(renderLoop);
-  }
-}
+        function enableCam() {
+            if (webcamRunning === true) {
+                webcamRunning = false;
+                enableWebcamButton.innerText = "ENABLE PREDICTIONS";
+            } else {
+                webcamRunning = true;
+                enableWebcamButton.innerText = "DISABLE PREDICTIONS";
+            }
 
-// Process the recognition result
-function processResult(result) {
-  if (result.gestures && result.gestures.length > 0) {
-    const gesture = result.gestures[0].categoryName;
-    console.log("Detected Gesture:", gesture);
+            const constraints = { video: true };
+            navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+                videoElement.srcObject = stream;
+                videoElement.addEventListener("loadeddata", predictWebcam);
+            });
+        }
 
-    if (gesture === 'Thumb_Up') {
-      // Alert when a "Thumbs Up" gesture is detected
-      window.alert("Thumbs Up Detected!");
-    }
-  }
-}
+        let lastVideoTime = -1;
+        let results;
 
-// Start the gesture recognizer when the window loads
-window.onload = initializeGestureRecognizer;
+        async function predictWebcam() {
+            const webcamElement = document.getElementById("webcam");
+
+            if (runningMode === "IMAGE") {
+                runningMode = "VIDEO";
+                await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+            }
+
+            let nowInMs = Date.now();
+            if (videoElement.currentTime !== lastVideoTime) {
+                lastVideoTime = videoElement.currentTime;
+                results = gestureRecognizer.recognizeForVideo(videoElement, nowInMs);
+            }
+
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+            canvasElement.style.height = "360px";
+            webcamElement.style.height = "360px";
+            canvasElement.style.width = "480px";
+            webcamElement.style.width = "480px";
+
+            const drawingUtils = new DrawingUtils(canvasCtx);
+
+            if (results.landmarks) {
+                for (const landmarks of results.landmarks) {
+                    drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+                        color: "#00F00F",
+                        lineWidth: 3
+                    });
+                    drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
+                }
+            }
+
+            if (results.gestures.length > 0) {
+                gestureOutput.style.display = "block";
+                const categoryName = results.gestures[0][0].categoryName;
+                const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
+                const handedness = results.handednesses[0][0].displayName;
+
+                let action;
+                switch (categoryName) {
+                    case "Pointing_Up":
+                        action = 1;
+                        break;
+                    case "Victory":
+                        action = 2;
+                        break;
+                    case "Thumb_Up":
+                        action = "Like";
+                        break;
+                    case "Thumb_Down":
+                        action = "Dislike";
+                        break;
+                    case "Closed_Fist":
+                        action = "Close";
+                        break;
+                    case "Open_Palm":
+                        action = "Submit";
+                        break;
+                    default:
+                        action = "Unknown gesture";
+                }
+
+
+                gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
+
+            } else {
+                gestureOutput.style.display = "none";
+            }
+
+            canvasCtx.restore();
+
+            if (webcamRunning === true) {
+                window.requestAnimationFrame(predictWebcam);
+            }
+        }
