@@ -142,29 +142,44 @@
                 }
             }
 
-            if (results.gestures.length > 0) {
-                gestureOutput.style.display = "block";
-                const categoryName = results.gestures[0][0].categoryName;
-                const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
-                const handedness = results.handednesses[0][0].displayName;
+           if (results.gestures.length > 0) {
+    gestureOutput.style.display = "block";
+    const categoryName = results.gestures[0][0].categoryName;
+    const categoryScore = parseFloat(results.gestures[0][0].score * 100).toFixed(2);
+    const handedness = results.handednesses[0][0].displayName;
 
-                gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Confidence: ${categoryScore} %\n Handedness: ${handedness}`;
-              if (categoryName === "Thumb_Up") {
-    alert("Thumbs Up gesture detected!");
-  }
-              if (categoryName === "Victory") {
-    alert("Number 2 gesture detected!");
-  }
-            } else {
-                gestureOutput.style.display = "none";
-            }
+    // Map gestures to specific values
+    let action;
+    switch (categoryName) {
+        case "Pointing_Up":
+            action = 1;
+            break;
+        case "Victory":
+            action = 2;
+            break;
+        case "Thumb_Up":
+            action = "Like";
+            break;
+        case "Thumb_Down":
+            action = "Dislike";
+            break;
+        case "Closed_fist":
+            action = "Close";
+            break;
+        case "Open_Palm":
+            action = "Submit";
+            break;
+        default:
+            action = "Unknown gesture";
+    }
 
-            canvasCtx.restore();
+    // Display the mapped action
+    gestureOutput.innerText = `GestureRecognizer: ${categoryName}\n Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
+    console.log(`Detected gesture: ${categoryName}, Action: ${action}`);
+} else {
+    gestureOutput.style.display = "none";
+}
 
-            if (webcamRunning === true) {
-                window.requestAnimationFrame(predictWebcam);
-            }
-        }
     </script>
 </body>
 
