@@ -41,7 +41,7 @@ function checkGestureOutput() {
                 hasDisliked = false;
                 //if (modal) {
                 //    modal.style.display = "none"; // Hide modal if it's open
-                }
+                //}
             }
         }
     }
