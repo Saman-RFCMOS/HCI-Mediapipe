@@ -117,6 +117,8 @@
           <button onclick="showDiv('voice_gesture')">Show Voice Feedback</button>
           <button onclick="showDiv('thank_you')">Show Thank You</button>-->
     <script>
+      const texts=document.getElementById(gesture_output);
+      alert(texts);
         function showDiv(divId) {
     const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
     divs.forEach(id => {
@@ -129,40 +131,6 @@
     });
   }
     </script>
-
-          <script>
-  function handleGesture() {
-    const gestureOutput = document.getElementById("gesture_output");
-
-    // Replace newlines with spaces and trim the output text
-    const gestureText = gestureOutput.innerText.replace(/\n/g, ' ').trim();
-
-    // Extract the action from the text (e.g., "Action: Like")
-    const actionMatch = gestureText.match(/Action: (\w+)/);
-
-    if (actionMatch && actionMatch[1]) {
-        const action = actionMatch[1];
-
-        // Log the matched action to the console
-        console.log("Matched action:", action);
-
-        // Based on gesture, show the corresponding div
-        const mainGesture = document.getElementById("main_gesture");
-        if (mainGesture && mainGesture.style.display !== 'none') {
-            if (action === "Like") {
-                showDiv('star_gesture');  // Show the "stars" div
-            } else if (action === "Dislike") {
-                showDiv('voice_gesture');  // Show the "voice feedback" div
-            }
-        }
-    } else {
-        console.log("No action found in the gesture text.");
-    }
-}
-
-
-</script>
-
 
           </div>
 
