@@ -108,6 +108,7 @@
   align-items: center;
   width: 100%;
   gap: 10px;
+  top:10px;
 }
 
 .LDimage-container img {
