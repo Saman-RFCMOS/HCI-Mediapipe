@@ -129,16 +129,11 @@ function checkGestureOutput() {
 
     if (gestureOutput && mainGesture) {
         const currentText = gestureOutput.innerText.trim();
-
         const actionMatch = currentText.match(/Action: (\w+)/);
-
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
-
-            // If main_gesture is visible
             if (mainGesture.style.display !== 'none') {
                 if (action === "Like") {
-                    alert("Like is OK");
                     showDiv('star_gesture');
                 }
                 else if (action === "Dislike") {
