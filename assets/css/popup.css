@@ -32,7 +32,7 @@
 
 #output_canvas {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   z-index: 1;
   text-align: center;
@@ -41,9 +41,9 @@
 #gesture_output {
   display: none;
   position: absolute;
-  bottom: 0px;
+  bottom: 300px;
   right: 10px;
   color: white;
   background-color: rgba(0, 0, 0, 0.7);
   padding: 10px;
-  font-size: 18px;
+  font-size: 24px;
