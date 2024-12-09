@@ -114,30 +114,20 @@
     </div>
 
     <script>
-let previousText = "";
-
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
 
     if (gestureOutput && mainGesture) {
-        // Get the current text from the gesture_output and trim any whitespace
         const currentText = gestureOutput.innerText.trim();
-
-        // Use a regular expression to extract the action part (e.g., "Like" from "Action: Like")
         const actionMatch = currentText.match(/Action: (\w+)/);
 
         if (actionMatch && actionMatch[1]) {
-            const action = actionMatch[1]; // Get the action (e.g., "Like")
-
-            // If main_gesture is visible
+            const action = actionMatch[1];
             if (mainGesture.style.display !== 'none') {
-                // If the action is "Like", show "star_gesture" div
                 if (action === "Like") {
-                    alert("Like is OK");
                     showDiv('star_gesture');
                 }
-                // If the action is "Dislike", show "voice_gesture" div
                 else if (action === "Dislike") {
                     showDiv('voice_gesture');
                 }
