@@ -123,15 +123,32 @@ function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
 
     if (gestureOutput) {
+        // Get the current text from the gesture_output and trim any whitespace
         const currentText = gestureOutput.innerText.trim();
 
-        // Only show the alert if the text has changed
-        if (currentText !== previousText && currentText !== "") {
-            alert("Gesture output detected: " + currentText);
-            previousText = currentText; // Update previousText to the current one
+        // Use a regular expression to extract the action part (e.g., "Like" from "Action: Like")
+        const actionMatch = currentText.match(/Action: (\w+)/);
+
+        if (actionMatch && actionMatch[1]) {
+            const action = actionMatch[1]; // Get the action (e.g., "Like")
+
+            // Log or alert the action
+            console.log("Action detected:", action);
+
+            // If you only want to alert when the action changes
+            if (action !== previousText) {
+                alert("Action detected: " + action); // Show the alert with the action
+                previousText = action; // Update previousText to the new action
+            }
         }
+    } else {
+        console.log("gesture_output element not found.");
     }
 }
+
+// Call the function every 1 second (1000ms) to check regularly
+setInterval(checkGestureOutput, 1000);
+
 
 setInterval(checkGestureOutput, 1000);
 
