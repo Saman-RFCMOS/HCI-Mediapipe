@@ -144,7 +144,7 @@
         }
 
         #output_canvas {
-            position: absolute !important;
+            position: absolute;
             top: 0;
             left: 0;
             z-index: 1;
