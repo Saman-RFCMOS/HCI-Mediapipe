@@ -118,18 +118,43 @@
           <button onclick="showDiv('thank_you')">Show Thank You</button>-->
 
           <script>
-            function showDiv(divId) {
-              const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
-              divs.forEach(id => {
-                const div = document.getElementById(id);
-                if (id === divId) {
-                  div.style.display = 'block';
-                } else {
-                  div.style.display = 'none';
-                }
-              });
-            }
-          </script>
+  function showDiv(divId) {
+    const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
+    divs.forEach(id => {
+      const div = document.getElementById(id);
+      if (id === divId) {
+        div.style.display = 'block';
+      } else {
+        div.style.display = 'none';
+      }
+    });
+  }
+
+  // Function to handle gesture detection
+  function handleGesture() {
+    const gestureOutput = document.getElementById("gesture_output");
+    const gestureText = gestureOutput.innerText;
+    
+    // Extract the action from the text (e.g., "Action: Like")
+    const actionMatch = gestureText.match(/Action: (\w+)/);
+    
+    if (actionMatch && actionMatch[1]) {
+      const action = actionMatch[1];
+
+      // Check if main_gesture is visible
+      const mainGesture = document.getElementById("main_gesture");
+      if (mainGesture && mainGesture.style.display !== 'none') {
+        // Perform actions based on gesture
+        if (action === "Like") {
+          showDiv('star_gesture');
+        } else if (action === "Dislike") {
+          showDiv('voice_gesture');
+        }
+      }
+    }
+  }
+</script>
+
 
           </div>
 
