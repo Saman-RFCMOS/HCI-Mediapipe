@@ -1,3 +1,6 @@
+let hasLiked = false; // Flag to track if "Like" action occurred
+let hasDisliked = false; // Flag to track if "Dislike" action occurred
+
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
@@ -8,14 +11,29 @@ function checkGestureOutput() {
         const actionMatch = currentText.match(/Action: (\w+)/);
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
+            
             if (mainGesture.style.display !== 'none') {
                 if (action === "Like") {
-                    showDiv('star_gesture');
-                }
-                else if (action === "Dislike") {
-                    showDiv('voice_gesture');
+                    hasLiked = true; // Set flag to true when user "Likes"
+                    hasDisliked = false; // Reset "Dislike" flag
+                } else if (action === "Dislike") {
+                    hasDisliked = true; // Set flag to true when user "Dislikes"
+                    hasLiked = false; // Reset "Like" flag
                 }
             }
+
+            // Check if "Submit" happens after "Like"
+            if (action === "Submit" && hasLiked) {
+                showDiv('star_gesture'); // Show 'star_gesture' if previously liked
+                hasLiked = false; // Reset the "Like" flag
+            }
+
+            // Check if "Submit" happens after "Dislike"
+            if (action === "Submit" && hasDisliked) {
+                showDiv('voice_gesture'); // Show 'voice_gesture' if previously disliked
+                hasDisliked = false; // Reset the "Dislike" flag
+            }
+
             if (action === "Close" && modal) {
                 modal.style.display = "none";
             }
