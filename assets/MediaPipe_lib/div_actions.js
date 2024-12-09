@@ -10,7 +10,7 @@ function handleGesture(gesture) {
         case 'dislike':
             showDiv('main_gesture'); // Show Main Gesture div
             break;
-        case 'star':
+        case 'Like':
             showDiv('star_gesture'); // Show Star Gesture div
             break;
         case 'voice':
