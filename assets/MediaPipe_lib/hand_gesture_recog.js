@@ -74,10 +74,16 @@ async function predictWebcam() {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-    canvasElement.style.height = "360px";
-    videoElement.style.height = "360px";
-    canvasElement.style.width = "480px";
-    videoElement.style.width = "480px";
+    // Set canvas dimensions to match video element dimensions
+    const videoWidth = videoElement.videoWidth;
+    const videoHeight = videoElement.videoHeight;
+
+    canvasElement.style.width = `${videoWidth}px`;
+    canvasElement.style.height = `${videoHeight}px`;
+    canvasElement.width = videoWidth;
+    canvasElement.height = videoHeight;
+    videoElement.style.width = `${videoWidth}px`;
+    videoElement.style.height = `${videoHeight}px`;
 
     const drawingUtils = new DrawingUtils(canvasCtx);
 
@@ -140,7 +146,7 @@ async function predictWebcam() {
                 if (extendedCount === 3) {
                     action = "3 Fingers";
                 } else if (extendedCount === 4) {
-                    action = "3 Fingers";
+                    action = "4 Fingers";
                 } else {
                     action = "Unknown gesture";
                 }
