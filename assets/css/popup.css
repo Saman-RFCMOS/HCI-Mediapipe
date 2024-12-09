@@ -137,12 +137,11 @@
   align-items: center;
 }
 
-#webcam {
-            width: 320px;
-            height: 180px;
+        #webcam {
+            width: 480px;
+            height: 360px;
             border: 1px solid black;
-            margin: 0 auto;
-  
+            text-align:center;
         }
 
         #output_canvas {
@@ -150,12 +149,13 @@
             top: 0;
             left: 0;
             z-index: 1;
+            text-align:center;
         }
 
         #gesture_output {
             display: none;
             position: absolute;
-            bottom: 40px;
+            bottom: 100px;
             left: 10px;
             color: white;
             background-color: rgba(0, 0, 0, 0.7);
