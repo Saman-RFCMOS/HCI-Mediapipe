@@ -86,28 +86,33 @@ async function predictWebcam() {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-    const drawingUtils = new DrawingUtils(canvasCtx);
-
-    // Drawing landmarks and connectors if they exist
+    // Log the raw results to debug landmarks
     if (results.landmarks && results.landmarks.length > 0) {
+        console.log("Landmarks:", results.landmarks);  // Log the landmarks data
+
         const landmarks = results.landmarks[0];
         
-        // Scale landmarks to match the canvas size
+        // Scaling landmarks to fit the canvas size
         const scaleX = canvasElement.width / videoWidth;
         const scaleY = canvasElement.height / videoHeight;
 
-        // Apply scaling for all landmarks and connectors
+        // Apply scaling to landmarks
         const scaledLandmarks = landmarks.map(landmark => ({
             x: landmark.x * canvasElement.width,
             y: landmark.y * canvasElement.height,
             z: landmark.z
         }));
 
+        const drawingUtils = new DrawingUtils(canvasCtx);
+
+        // Draw connectors and landmarks only if landmarks are present
         drawingUtils.drawConnectors(scaledLandmarks, GestureRecognizer.HAND_CONNECTIONS, {
             color: "#00F00F",
             lineWidth: 3
         });
         drawingUtils.drawLandmarks(scaledLandmarks, { color: "#FF0000", lineWidth: 1 });
+    } else {
+        console.log("No landmarks detected!");
     }
 
     if (results.gestures.length > 0) {
@@ -139,31 +144,7 @@ async function predictWebcam() {
                 action = "Submit";
                 break;
             default:
-                // Custom gesture detection for 3 and 4 fingers
-                const landmarks = results.landmarks[0];
-
-                const isFingerExtended = (fingerIndex) => {
-                    const tip = landmarks[fingerIndex * 4];
-                    const pip = landmarks[fingerIndex * 4 - 1];
-                    return tip.y < pip.y; // Tip is above PIP for a typical "up" hand orientation
-                };
-
-                const extendedFingers = [
-                    isFingerExtended(1), // Index
-                    isFingerExtended(2), // Middle
-                    isFingerExtended(3), // Ring
-                    isFingerExtended(4), // Pinky
-                ];
-
-                const extendedCount = extendedFingers.filter(Boolean).length;
-
-                if (extendedCount === 3) {
-                    action = "3 Fingers";
-                } else if (extendedCount === 4) {
-                    action = "4 Fingers";
-                } else {
-                    action = "Unknown gesture";
-                }
+                action = "Unknown gesture";
         }
 
         gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n`;
