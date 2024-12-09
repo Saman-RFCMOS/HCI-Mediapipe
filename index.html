@@ -76,10 +76,6 @@
           <div>
             <h4>Please give us your Gesture feedback</h4>
             <hr>
-           <!-- <video id="webcam" autoplay playsinline></video>
-            <canvas id="output_canvas"></canvas>-->
-<video id="webcam" width="320" height="180" autoplay playsinline></video>
-<canvas id="output_canvas" width="320" height="180"></canvas>
           </div>
         </div>
         <div class="modalx-body">
@@ -91,7 +87,10 @@
             </div>
             <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
             <script type="module" src="assets/MediaPipe_lib/div_actions.js"></script>
-
+            <div id="webcam-container" style="position: relative; width: 480px; height: 360px;">
+          <video id="webcam" width="480" height="360" autoplay playsinline></video>
+          <canvas id="output_canvas" width="480" height="360"></canvas>
+          </div>
             
           </div>
           <div id="star_gesture" style="display: none;">
