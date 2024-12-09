@@ -71,29 +71,43 @@ async function predictWebcam() {
         results = gestureRecognizer.recognizeForVideo(videoElement, nowInMs);
     }
 
-    canvasCtx.save();
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-    // Set canvas dimensions to match video element dimensions
+    // Scaling the video width and height to match canvas dimensions
     const videoWidth = videoElement.videoWidth;
     const videoHeight = videoElement.videoHeight;
 
-    canvasElement.style.width = `${videoWidth}px`;
-    canvasElement.style.height = `${videoHeight}px`;
+    // Setting the canvas size to match the video element size
     canvasElement.width = videoWidth;
     canvasElement.height = videoHeight;
+    canvasElement.style.width = `${videoWidth}px`;
+    canvasElement.style.height = `${videoHeight}px`;
     videoElement.style.width = `${videoWidth}px`;
     videoElement.style.height = `${videoHeight}px`;
 
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
     const drawingUtils = new DrawingUtils(canvasCtx);
 
+    // Drawing landmarks and connectors if they exist
     if (results.landmarks && results.landmarks.length > 0) {
         const landmarks = results.landmarks[0];
-        drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+        
+        // Scale landmarks to match the canvas size
+        const scaleX = canvasElement.width / videoWidth;
+        const scaleY = canvasElement.height / videoHeight;
+
+        // Apply scaling for all landmarks and connectors
+        const scaledLandmarks = landmarks.map(landmark => ({
+            x: landmark.x * canvasElement.width,
+            y: landmark.y * canvasElement.height,
+            z: landmark.z
+        }));
+
+        drawingUtils.drawConnectors(scaledLandmarks, GestureRecognizer.HAND_CONNECTIONS, {
             color: "#00F00F",
             lineWidth: 3
         });
-        drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
+        drawingUtils.drawLandmarks(scaledLandmarks, { color: "#FF0000", lineWidth: 1 });
     }
 
     if (results.gestures.length > 0) {
