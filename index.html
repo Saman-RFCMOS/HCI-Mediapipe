@@ -112,37 +112,56 @@
         </div>
       </div>
     </div>
-         <!-- <button onclick="showDiv('main_gesture')">Dis/Like Gesture</button>
-          <button onclick="showDiv('star_gesture')">Show Star Gesture</button>
-          <button onclick="showDiv('voice_gesture')">Show Voice Feedback</button>
-          <button onclick="showDiv('thank_you')">Show Thank You</button>-->
-    <script>
-      let previousText = "";
-    function checkGestureOutput() {
-    const gestureOutput = document.getElementById("gesture_output");
 
-    if (gestureOutput) {
+    <script>
+let previousText = "";
+
+function checkGestureOutput() {
+    const gestureOutput = document.getElementById("gesture_output");
+    const mainGesture = document.getElementById("main_gesture");
+
+    if (gestureOutput && mainGesture) {
+        // Get the current text from the gesture_output and trim any whitespace
         const currentText = gestureOutput.innerText.trim();
+
+        // Use a regular expression to extract the action part (e.g., "Like" from "Action: Like")
         const actionMatch = currentText.match(/Action: (\w+)/);
-         const action = actionMatch[1]; 
-      if(action==="Like"){
-        alert("Like is OK");
-      }
-    } 
+
+        if (actionMatch && actionMatch[1]) {
+            const action = actionMatch[1]; // Get the action (e.g., "Like")
+
+            // If main_gesture is visible
+            if (mainGesture.style.display !== 'none') {
+                // If the action is "Like", show "star_gesture" div
+                if (action === "Like") {
+                    alert("Like is OK");
+                    showDiv('star_gesture');
+                }
+                // If the action is "Dislike", show "voice_gesture" div
+                else if (action === "Dislike") {
+                    showDiv('voice_gesture');
+                }
+            }
+        }
+    }
 }
+
+// Call the function every 1 second (1000ms) to check regularly
 setInterval(checkGestureOutput, 1000);
 
-        function showDiv(divId) {
+// Show the appropriate div
+function showDiv(divId) {
     const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
     divs.forEach(id => {
-      const div = document.getElementById(id);
-      if (id === divId) {
-        div.style.display = 'block';
-      } else {
-        div.style.display = 'none';
-      }
+        const div = document.getElementById(id);
+        if (id === divId) {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+        }
     });
-  }
+}
+
     </script>
 
           </div>
