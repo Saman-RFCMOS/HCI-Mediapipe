@@ -79,7 +79,7 @@
           </div>
         </div>
         <div class="modalx-body">
-          <div class="webcam-container">
+          <div>
             <video id="webcam" autoplay playsinline></video>
             <canvas id="output_canvas" hidden></canvas>
           </div>
@@ -90,6 +90,7 @@
               <div id="gesture_output"></div>
             </div>
             <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
+            <script type="module" src="assets/MediaPipe_lib/div_actions.js"></script>
 
             
           </div>
@@ -112,10 +113,10 @@
             </div>
           </div>
           <div style="height: 10px;"></div>
-          <button onclick="showDiv('main_gesture')">Dis/Like Gesture</button>
+         <!-- <button onclick="showDiv('main_gesture')">Dis/Like Gesture</button>
           <button onclick="showDiv('star_gesture')">Show Star Gesture</button>
           <button onclick="showDiv('voice_gesture')">Show Voice Feedback</button>
-          <button onclick="showDiv('thank_you')">Show Thank You</button>
+          <button onclick="showDiv('thank_you')">Show Thank You</button>-->
 
           <script>
             function showDiv(divId) {
