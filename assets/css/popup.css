@@ -23,6 +23,100 @@
   transform: translateY(-50%);
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  .modalx-content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalx-content {
+    width: 95%;
+  }
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0
+  }
+
+  to {
+    top: 0;
+    opacity: 1
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0
+  }
+
+  to {
+    top: 0;
+    opacity: 1
+  }
+}
+
+.closex {
+  color: red;
+  float: right;
+  font-size: 36px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #F00;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.closex:hover,
+.closex:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modalx-header {
+  padding: 2px 16px;
+  color: rgb(0, 0, 0);
+  height: auto;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+.modalx-body {
+  padding: 4px 4px;
+  width: auto;
+}
+
+.modalx-footer {
+  padding: 2px 16px;
+  background-color: #333333;
+  color: white;
+}
+
+.LDimage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.LDimage-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 #webcam-container {
     position: relative; 
     width: 480px;
@@ -54,7 +148,4 @@
   background-color: rgba(0, 0, 0, 0.7);
   padding: 10px;
   font-size: 24px;
-}
-#LDimage-container{
-  text-align:center;
 }
