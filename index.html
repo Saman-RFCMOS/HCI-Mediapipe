@@ -117,8 +117,24 @@
           <button onclick="showDiv('voice_gesture')">Show Voice Feedback</button>
           <button onclick="showDiv('thank_you')">Show Thank You</button>-->
     <script>
-      const texts=document.getElementById(gesture_output);
-      alert(texts);
+      let previousText = "";
+
+function checkGestureOutput() {
+    const gestureOutput = document.getElementById("gesture_output");
+
+    if (gestureOutput) {
+        const currentText = gestureOutput.innerText.trim();
+
+        // Only show the alert if the text has changed
+        if (currentText !== previousText && currentText !== "") {
+            alert("Gesture output detected: " + currentText);
+            previousText = currentText; // Update previousText to the current one
+        }
+    }
+}
+
+setInterval(checkGestureOutput, 1000);
+
         function showDiv(divId) {
     const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
     divs.forEach(id => {
