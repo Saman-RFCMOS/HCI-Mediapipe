@@ -130,29 +130,28 @@
     });
   }
 
-  // Function to handle gesture detection
   function handleGesture() {
     const gestureOutput = document.getElementById("gesture_output");
-    const gestureText = gestureOutput.innerText;
-    
+    const gestureText = gestureOutput.innerText.trim();
+
     // Extract the action from the text (e.g., "Action: Like")
     const actionMatch = gestureText.match(/Action: (\w+)/);
-    
-    if (actionMatch && actionMatch[1]) {
-      const action = actionMatch[1];
 
-      // Check if main_gesture is visible
-      const mainGesture = document.getElementById("main_gesture");
-      if (mainGesture && mainGesture.style.display !== 'none') {
-        // Perform actions based on gesture
-        if (action === "Like") {
-          showDiv('star_gesture');
-        } else if (action === "Dislike") {
-          showDiv('voice_gesture');
+    if (actionMatch && actionMatch[1]) {
+        const action = actionMatch[1];
+
+        // Based on gesture, show the corresponding div
+        const mainGesture = document.getElementById("main_gesture");
+        if (mainGesture && mainGesture.style.display !== 'none') {
+            if (action === "Like") {
+                showDiv('star_gesture');  // Show the "stars" div
+            } else if (action === "Dislike") {
+                showDiv('voice_gesture');  // Show the "voice feedback" div
+            }
         }
-      }
     }
-  }
+}
+
 </script>
 
 
