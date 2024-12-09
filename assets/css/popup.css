@@ -119,7 +119,6 @@
 
 #webcam-container {
     position: relative; 
-    width: 480px;
     height: 360px;
 }
 
@@ -127,13 +126,15 @@
     width: 100%;
     height: 100%;
     border: 1px solid black;
+    text-align: center;
 }
 
 #output_canvas {
-    position: absolute;
+    position: absolute; 
     top: 0;
     left: 0;
     z-index: 1; 
+    text-align: center;
 }
 
 
