@@ -146,7 +146,7 @@ async function predictWebcam() {
                 }
         }
 
-        gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n Handedness: ${handedness}`;
+        gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n`;
     } else {
         gestureOutput.style.display = "none";
     }
