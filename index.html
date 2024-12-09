@@ -132,7 +132,9 @@
 
   function handleGesture() {
     const gestureOutput = document.getElementById("gesture_output");
-    const gestureText = gestureOutput.innerText.trim();
+
+    // Replace newlines with spaces and trim the output text
+    const gestureText = gestureOutput.innerText.replace(/\n/g, ' ').trim();
 
     // Extract the action from the text (e.g., "Action: Like")
     const actionMatch = gestureText.match(/Action: (\w+)/);
@@ -151,6 +153,7 @@
         }
     }
 }
+
 
 </script>
 
