@@ -35,14 +35,14 @@ function checkGestureOutput() {
             }
 
             // Handle "Close" action
-            if (action === "Close") {
-                showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
-                hasLiked = false; // Reset both flags
-                hasDisliked = false;
+            //if (action === "Close") {
+            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
+            //    hasLiked = false; // Reset both flags
+            //    hasDisliked = false;
                 //if (modal) {
                 //    modal.style.display = "none"; // Hide modal if it's open
                 //}
-            }
+            //}
         }
     }
 }
