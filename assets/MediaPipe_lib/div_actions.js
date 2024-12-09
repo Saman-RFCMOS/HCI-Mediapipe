@@ -9,12 +9,25 @@ function checkGestureOutput() {
         const actionMatch = currentText.match(/Action: (\w+)/);
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
+            const like_state = -1
             if (mainGesture.style.display !== 'none') {
                 if (action === "Like") {
-                    showDiv('star_gesture');
+                    like_state = 1
+                    // showDiv('star_gesture');
                 }
                 else if (action === "Dislike") {
+                    like_state = 0
+                    // showDiv('voice_gesture');
+                }
+                if (action == "Submit") {
+                    if (like_state === 1){
+                    showDiv('star_gesture');
+                    }
+
+                    else if (like_state === 0){
                     showDiv('voice_gesture');
+                    }
+
                 }
             }
             if (action === "Close" && modal) {
