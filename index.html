@@ -100,7 +100,14 @@
               <img src="assets/img/number.png" alt="stars Gesture">
             </div>
           </div>
-          <div id="voice_gesture" style="display: none;">Voice feedback</div>
+          <div id="voice_gesture" style="display: none;">
+            <div class="LDimage-container">
+              <img src="assets/img/stars.png" alt="stars Gesture">
+            </div>
+            <div class="LDimage-container">
+              <img src="assets/img/number.png" alt="stars Gesture">
+            </div>
+          </div>
           <div id="thank_you" style="display: none;">
             <div style="text-align: center;">
               <h2>Our team uses your feedback to improve the website's usability!</h2>
@@ -131,15 +138,16 @@ function checkGestureOutput() {
                 else if (action === "Dislike") {
                     showDiv('voice_gesture');
                 }
+              else if (action === "Close") {
+                    span.onclick = function() {
+                    modal.style.display = "none";
+}
+                }
             }
         }
     }
 }
-
-// Call the function every 1 second (1000ms) to check regularly
 setInterval(checkGestureOutput, 1000);
-
-// Show the appropriate div
 function showDiv(divId) {
     const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
     divs.forEach(id => {
