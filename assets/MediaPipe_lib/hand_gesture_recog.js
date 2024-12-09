@@ -71,48 +71,23 @@ async function predictWebcam() {
         results = gestureRecognizer.recognizeForVideo(videoElement, nowInMs);
     }
 
-    // Scaling the video width and height to match canvas dimensions
-    const videoWidth = videoElement.videoWidth;
-    const videoHeight = videoElement.videoHeight;
-
-    // Setting the canvas size to match the video element size
-    canvasElement.width = videoWidth;
-    canvasElement.height = videoHeight;
-    canvasElement.style.width = `${videoWidth}px`;
-    canvasElement.style.height = `${videoHeight}px`;
-    videoElement.style.width = `${videoWidth}px`;
-    videoElement.style.height = `${videoHeight}px`;
-
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-    // Log the raw results to debug landmarks
+    canvasElement.style.height = "360px";
+    videoElement.style.height = "360px";
+    canvasElement.style.width = "480px";
+    videoElement.style.width = "480px";
+
+    const drawingUtils = new DrawingUtils(canvasCtx);
+
     if (results.landmarks && results.landmarks.length > 0) {
-        console.log("Landmarks:", results.landmarks);  // Log the landmarks data
-
         const landmarks = results.landmarks[0];
-        
-        // Scaling landmarks to fit the canvas size
-        const scaleX = canvasElement.width / videoWidth;
-        const scaleY = canvasElement.height / videoHeight;
-
-        // Apply scaling to landmarks
-        const scaledLandmarks = landmarks.map(landmark => ({
-            x: landmark.x * canvasElement.width,
-            y: landmark.y * canvasElement.height,
-            z: landmark.z
-        }));
-
-        const drawingUtils = new DrawingUtils(canvasCtx);
-
-        // Draw connectors and landmarks only if landmarks are present
-        drawingUtils.drawConnectors(scaledLandmarks, GestureRecognizer.HAND_CONNECTIONS, {
+        drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
             color: "#00F00F",
             lineWidth: 3
         });
-        drawingUtils.drawLandmarks(scaledLandmarks, { color: "#FF0000", lineWidth: 1 });
-    } else {
-        console.log("No landmarks detected!");
+        drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
     }
 
     if (results.gestures.length > 0) {
@@ -144,10 +119,34 @@ async function predictWebcam() {
                 action = "Submit";
                 break;
             default:
-                action = "Unknown gesture";
+                // Custom gesture detection for 3 and 4 fingers
+                const landmarks = results.landmarks[0];
+
+                const isFingerExtended = (fingerIndex) => {
+                    const tip = landmarks[fingerIndex * 4];
+                    const pip = landmarks[fingerIndex * 4 - 1];
+                    return tip.y < pip.y; // Tip is above PIP for a typical "up" hand orientation
+                };
+
+                const extendedFingers = [
+                    isFingerExtended(1), // Index
+                    isFingerExtended(2), // Middle
+                    isFingerExtended(3), // Ring
+                    isFingerExtended(4), // Pinky
+                ];
+
+                const extendedCount = extendedFingers.filter(Boolean).length;
+
+                if (extendedCount === 3) {
+                    action = "3 Fingers";
+                } else if (extendedCount === 4) {
+                    action = "3 Fingers";
+                } else {
+                    action = "Unknown gesture";
+                }
         }
 
-        gestureOutput.innerText = `Action: ${action}\n Confidence: ${categoryScore}%\n`;
+        gestureOutput.innerText = Action: ${action}\n Confidence: ${categoryScore}%\n;
     } else {
         gestureOutput.style.display = "none";
     }
