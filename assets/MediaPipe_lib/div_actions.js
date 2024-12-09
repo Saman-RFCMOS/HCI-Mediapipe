@@ -1,28 +1,39 @@
 
-function handleGestureAction() {
+function checkGestureOutput() {
+    const gestureOutput = document.getElementById("gesture_output");
+    const mainGesture = document.getElementById("main_gesture");
+    const modal = document.getElementById("survey_popup");
 
-    const gestureOutput = document.getElementById('gesture_output').innerText;
-
-    const actionMatch = gestureOutput.match(/Action: (.+?)\n/);
-    const categoryScoreMatch = gestureOutput.match(/Confidence: (\d+)%\n/);
-
-    if (actionMatch && categoryScoreMatch) {
-        const action = actionMatch[1];
-        const categoryScore = categoryScoreMatch[1];
-
-        const mainGesture = document.getElementById('main_gesture');
-        if (mainGesture && mainGesture.offsetParent !== null) {  
-
-            // If the action is "Like", call showDiv('star_gesture')
-            if (action === 'Like') {
-                showDiv('star_gesture');
+    if (gestureOutput && mainGesture) {
+        const currentText = gestureOutput.innerText.trim();
+        const actionMatch = currentText.match(/Action: (\w+)/);
+        if (actionMatch && actionMatch[1]) {
+            const action = actionMatch[1]; 
+            if (mainGesture.style.display !== 'none') {
+                if (action === "Like") {
+                    showDiv('star_gesture');
+                }
+                else if (action === "Dislike") {
+                    showDiv('voice_gesture');
+                }
             }
-            // If the action is "Dislike", call showDiv('voice_gesture')
-            else if (action === 'Dislike') {
-                showDiv('voice_gesture');
+            if (action === "Close" && modal) {
+                modal.style.display = "none";
             }
         }
     }
 }
 
-handleGestureAction();
+setInterval(checkGestureOutput, 1000);
+
+function showDiv(divId) {
+    const divs = ['main_gesture', 'star_gesture', 'voice_gesture', 'thank_you'];
+    divs.forEach(id => {
+        const div = document.getElementById(id);
+        if (id === divId) {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+        }
+    });
+}
