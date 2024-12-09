@@ -132,6 +132,11 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.webcam-container {
+  display: flex;
+  align-items: center;
+}
+
 #webcam {
             width: 480px;
             height: 360px;
