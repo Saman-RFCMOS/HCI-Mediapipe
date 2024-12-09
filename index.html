@@ -81,8 +81,10 @@
     <div class="modalx-body">
          <script type="module" src="assets/MediaPipe_lib/hand_gesture_recog.js"></script>
         <script type="module" src="assets/MediaPipe_lib/div_actions.js"></script>
-        <video id="webcam" width="480" height="360" autoplay playsinline></video>
-        <canvas id="output_canvas" width="480" height="360"></canvas>
+        <div id="webcam-container" style="position: relative; width: 480px; height: 360px;">
+    <video id="webcam" width="480" height="360" autoplay playsinline></video>
+    <canvas id="output_canvas" width="480" height="360"></canvas>
+</div>
       <div id="main_gesture">
         <div class="LDimage-container">
           <img src="assets/img/Like.jpg" alt="Like Gesture">
