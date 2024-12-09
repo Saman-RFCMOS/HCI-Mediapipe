@@ -1,34 +1,28 @@
-function getGestureFromDiv() {
-    const gestureOutputDiv = document.getElementById('gesture_output');
-    const gestureOutputText = gestureOutputDiv.innerText; 
-    const actionMatch = gestureOutputText.match(/Action:\s*(\w+)/);
-    return actionMatch ? actionMatch[1] : null; 
-}
 
-function handleGesture(gesture) {
-    switch (gesture) {
-        case 'dislike':
-            showDiv('main_gesture'); // Show Main Gesture div
-            break;
-        case 'Like':
-            showDiv('star_gesture'); // Show Star Gesture div
-            break;
-        case 'voice':
-            showDiv('voice_gesture'); // Show Voice Feedback div
-            break;
-        case 'thank_you':
-            showDiv('thank_you'); // Show Thank You div
-            break;
-        default:
-            console.log("Unknown gesture");
+function handleGestureAction() {
+
+    const gestureOutput = document.getElementById('gesture_output').innerText;
+
+    const actionMatch = gestureOutput.match(/Action: (.+?)\n/);
+    const categoryScoreMatch = gestureOutput.match(/Confidence: (\d+)%\n/);
+
+    if (actionMatch && categoryScoreMatch) {
+        const action = actionMatch[1];
+        const categoryScore = categoryScoreMatch[1];
+
+        const mainGesture = document.getElementById('main_gesture');
+        if (mainGesture && mainGesture.offsetParent !== null) {  
+
+            // If the action is "Like", call showDiv('star_gesture')
+            if (action === 'Like') {
+                showDiv('star_gesture');
+            }
+            // If the action is "Dislike", call showDiv('voice_gesture')
+            else if (action === 'Dislike') {
+                showDiv('voice_gesture');
+            }
+        }
     }
 }
 
-
-const extractedGesture = getGestureFromDiv();
-if (extractedGesture) {
-    console.log(`Extracted Gesture: ${extractedGesture}`);
-    handleGesture(extractedGesture); 
-} else {
-    console.log("No gesture detected.");
-}
+handleGestureAction();
