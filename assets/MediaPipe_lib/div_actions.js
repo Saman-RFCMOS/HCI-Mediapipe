@@ -4,10 +4,37 @@ let hasDisliked = false; // Flag to track if "Dislike" action occurred
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
+    const voiceGesture =document.getElementById("voice_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
     const imagesub = document.getElementById('OPsubmit');
+
+if (gestureOutput && voiceGesture) {
+        const currentText = gestureOutput.innerText.trim();
+        const actionMatch = currentText.match(/Action: (\w+)/);
+        mainGesture.style.display === 'none';
+        if (actionMatch && actionMatch[1]) {
+            const action = actionMatch[1]; 
+            if (voiceGesture.style.display !== 'none') {
+                if (action === "Submit") {
+                    imagesub.style.display = 'block'; 
+                    imagesub.style.opacity = '1';
+                    showDiv('voice_gesture'); 
+                } 
+            }
+            //if (action === "Close") {
+            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
+            //    hasLiked = false; // Reset both flags
+            //    hasDisliked = false;
+                //if (modal) {
+                //    modal.style.display = "none"; // Hide modal if it's open
+                //}
+            //}
+        }
+    } 
+
+    
 
     if (gestureOutput && mainGesture) {
         const currentText = gestureOutput.innerText.trim();
