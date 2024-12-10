@@ -69,7 +69,25 @@ if (gestureOutput && starGesture) {
                 starsState[0] = removeGray; // Update the state of the 1st star
                 starsState[1] = removeGray; // Update the state of the 2nd star
             } else if (action === "3") {
-                remov
+                removeGrayOverlay(star1); // Remove gray from 1st star
+                removeGrayOverlay(star2); // Remove gray from 2nd star
+                removeGrayOverlay(star3); // Remove gray from 3rd star
+                starsState[0] = removeGray; // Update the state of the 1st star
+                starsState[1] = removeGray; // Update the state of the 2nd star
+                starsState[2] = removeGray; // Update the state of the 3rd star
+            }
+
+            // Check if the action is "Submit" and if not all stars are gray
+            if (action === "Submit") {
+                if (starsState.includes(removeGray)) { // At least one star is not gray
+                    showDiv("thank_you");
+                } else {
+                    console.log("All stars are still gray, cannot submit.");
+                }
+            }
+        }
+    }
+}
 
 
     
