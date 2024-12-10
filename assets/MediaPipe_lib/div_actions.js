@@ -20,7 +20,7 @@ if (gestureOutput && voiceGesture) {
                 if (action === "Submit") {
                     imagesub.style.display = 'block'; 
                     imagesub.style.opacity = '1';
-                    showDiv('voice_gesture'); 
+                    showDiv('thank_you'); 
                 } 
             }
             //if (action === "Close") {
