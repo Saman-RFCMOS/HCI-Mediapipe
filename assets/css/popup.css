@@ -142,8 +142,8 @@
 #gesture_output {
   display: none;
    position: absolute; 
-    top: 0;
-    right: 0;
+    top: 150px;
+    right: 10px;
     z-index: 1; 
     text-align: center;
   color: white;
