@@ -51,30 +51,7 @@ function checkGestureOutput() {
         }
     }
 
-     if (gestureOutput && voiceGesture) {
-        const currentText = gestureOutput.innerText.trim();
-        const actionMatch = currentText.match(/Action: (\w+)/);
-        if (actionMatch && actionMatch[1]) {
-            const action = actionMatch[1]; 
-            if (voiceGesture.style.display !== 'none') {
-                if (action === "Submit") {
-                    imagesub.style.display = 'block'; // Change from 'none' to 'block'
-                    imagesub.style.opacity = '1';
-                    showDiv('thank_you'); 
-                    hasLiked = false; 
-                    hasDisliked = false;
-                } 
-            }
-            //if (action === "Close") {
-            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
-            //    hasLiked = false; // Reset both flags
-            //    hasDisliked = false;
-                //if (modal) {
-                //    modal.style.display = "none"; // Hide modal if it's open
-                //}
-            //}
-        }
-    }
+    
 }
 
 setInterval(checkGestureOutput, 1000);
