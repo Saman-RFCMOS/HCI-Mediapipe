@@ -34,6 +34,10 @@ function checkGestureOutput() {
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
                 }
+                else if(action === !"Like" && action === !"Dislike" && action === !"Submit")
+                {
+                    imagesub.style.display = 'block';
+                }
                
             }
 
