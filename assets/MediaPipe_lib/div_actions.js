@@ -20,7 +20,7 @@ function checkGestureOutput() {
                     hasLiked = true; // Set flag to true when user "Likes"
                     hasDisliked = false; // Reset "Dislike" flag
                    
-                    imageLike.style.filter = 'sepia(1) hue-rotate(180deg)';
+                    imageLike.style.filter = 'sepia(1) hue-rotate(40deg) saturate(3)';
                     imageDis.style.filter = '';
                     
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
@@ -29,7 +29,7 @@ function checkGestureOutput() {
                     hasDisliked = true; // Set flag to true when user "Dislikes"
                     hasLiked = false; // Reset "Like" flag
                     
-                    imageDis.style.filter = 'sepia(1) hue-rotate(180deg)';
+                    imageDis.style.filter = 'sepia(1) hue-rotate(40deg) saturate(3)';
                     imageLike.style.filter = '';
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
