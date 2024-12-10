@@ -14,36 +14,37 @@ function checkGestureOutput() {
 if (gestureOutput && voiceGesture) {
     const currentText = gestureOutput.innerText.trim();
     const actionMatch = currentText.match(/Action: (\w+)/);
+
     if (actionMatch && actionMatch[1]) {
         const action = actionMatch[1];
+
         if (voiceGesture.style.display !== 'none') {
-            let timerStarted = false;
-            if (!timerStarted) {
-                timerStarted = true;
-                const recoTimeDiv = document.getElementById('RecoTime'); 
-                let countdown = 5; 
-                const timerInterval = setInterval(() => {
+            const recoTimeDiv = document.getElementById('RecoTime'); 
+            let countdown = 5; 
+
+            // Start the timer
+            const timerInterval = setInterval(() => {
+                if (recoTimeDiv) {
+                    recoTimeDiv.innerText = `Recording: ${countdown} seconds`;
+                }
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(timerInterval); // Stop the timer
+                    micsub.style.display = 'block';
+                    micsub.style.opacity = '1';
+                    if (action === "Submit") {
+                        showDiv("thank_you");
+                    }
                     if (recoTimeDiv) {
-                        recoTimeDiv.innerText = `Recording remaining: ${countdown} seconds`;
+                        recoTimeDiv.innerText = '';
                     }
-                    countdown--;
-                    if (countdown < 0) {
-                        clearInterval(timerInterval);
-                        micsub.style.display = 'block';
-                        micsub.style.opacity = '1';
-                        if (action === "Submit") {
-                            showDiv("thank_you");
-                        }
-                        if (recoTimeDiv) {
-                            recoTimeDiv.innerText = ''; 
-                        }
-                        timerStarted = false; 
-                    }
-                }, 1000); 
-            }
+                }
+            }, 1000); 
         }
     }
 }
+
 
 
   
