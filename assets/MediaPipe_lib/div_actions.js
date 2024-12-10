@@ -14,43 +14,32 @@ function checkGestureOutput() {
 if (gestureOutput && voiceGesture) {
     const currentText = gestureOutput.innerText.trim();
     const actionMatch = currentText.match(/Action: (\w+)/);
-
     if (actionMatch && actionMatch[1]) {
         const action = actionMatch[1];
-
         if (voiceGesture.style.display !== 'none') {
-            // Show the image or feedback while waiting
-            micsub.style.display = 'block';
-            micsub.style.opacity = '1';
-
-            // Ensure the timer runs only once
             let timerStarted = false;
-
             if (!timerStarted) {
                 timerStarted = true;
-
-                const recoTimeDiv = document.getElementById('RecoTime'); // Reference to the RecoTime div
-                let countdown = 5; // Start from 5 seconds
-
-                // Update the timer every second
+                const recoTimeDiv = document.getElementById('RecoTime'); 
+                let countdown = 5; 
                 const timerInterval = setInterval(() => {
                     if (recoTimeDiv) {
-                        recoTimeDiv.innerText = `Time remaining: ${countdown} seconds`;
+                        recoTimeDiv.innerText = `Recording remaining: ${countdown} seconds`;
                     }
                     countdown--;
-
-                    // When the countdown ends
                     if (countdown < 0) {
-                        clearInterval(timerInterval); // Stop the interval
+                        clearInterval(timerInterval);
+                        micsub.style.display = 'block';
+                        micsub.style.opacity = '1';
                         if (action === "Submit") {
                             showDiv("thank_you");
                         }
                         if (recoTimeDiv) {
-                            recoTimeDiv.innerText = ''; // Clear the timer display
+                            recoTimeDiv.innerText = ''; 
                         }
-                        timerStarted = false; // Reset the flag
+                        timerStarted = false; 
                     }
-                }, 1000); // Update every 1 second
+                }, 1000); 
             }
         }
     }
