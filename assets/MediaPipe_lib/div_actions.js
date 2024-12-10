@@ -16,6 +16,8 @@ function checkGestureOutput() {
                 if (action === "Like") {
                     hasLiked = true; // Set flag to true when user "Likes"
                     hasDisliked = false; // Reset "Dislike" flag
+                    const image = document.getElementById('Likeimg');
+                    image.style.filter = 'sepia(1) hue-rotate(180deg)';
                 } else if (action === "Dislike") {
                     hasDisliked = true; // Set flag to true when user "Dislikes"
                     hasLiked = false; // Reset "Like" flag
