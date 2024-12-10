@@ -17,11 +17,13 @@ if (gestureOutput && voiceGesture) {
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
             if (voiceGesture.style.display !== 'none') {
-                if (action === "Submit") {
-                    imagesub.style.display = 'block'; 
-                    imagesub.style.opacity = '1';
+                imagesub.style.display = 'block'; 
+                imagesub.style.opacity = '1';
+
             function onTimerComplete() {
-                showDiv('thank_you'); 
+                if (action === "Submit") {
+                    showDiv('voice_gesture');
+                }
                                 }
 
             function startTimer(duration, callback) {
@@ -34,7 +36,7 @@ if (gestureOutput && voiceGesture) {
             if (true) {
             startTimer(3000, onTimerComplete);
                             }
-                } 
+
             }
         }
     } 
