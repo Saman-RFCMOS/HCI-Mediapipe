@@ -4,7 +4,6 @@ let hasDisliked = false; // Flag to track if "Dislike" action occurred
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
-    const voiceGesture=document.getElementByID("voice_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
@@ -17,18 +16,18 @@ function checkGestureOutput() {
             const action = actionMatch[1]; 
             if (mainGesture.style.display !== 'none') {
                 if (action === "Like") {
-                    hasLiked = true; // Set flag to true when user "Likes"
-                    hasDisliked = false; // Reset "Dislike" flag
+                    hasLiked = true; 
+                    hasDisliked = false; 
                     imageLike.style.filter = 'sepia(1) hue-rotate(180deg)';
                     imageDis.style.filter = '';
-                    imagesub.style.display = 'block'; // Change from 'none' to 'block'
+                    imagesub.style.display = 'block'; 
                     imagesub.style.opacity = '1';
                 } else if (action === "Dislike") {
-                    hasDisliked = true; // Set flag to true when user "Dislikes"
-                    hasLiked = false; // Reset "Like" flag
+                    hasDisliked = true; 
+                    hasLiked = false;
                     imageDis.style.filter = 'sepia(1) hue-rotate(180deg)';
                     imageLike.style.filter = '';
-                    imagesub.style.display = 'block'; // Change from 'none' to 'block'
+                    imagesub.style.display = 'block';
                     imagesub.style.opacity = '1';
                 }
             }
@@ -49,9 +48,7 @@ function checkGestureOutput() {
                 //}
             //}
         }
-    }
-
-    
+    } 
 }
 
 setInterval(checkGestureOutput, 1000);
