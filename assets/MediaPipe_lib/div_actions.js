@@ -34,12 +34,7 @@ function checkGestureOutput() {
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
                 }
-                else{
-                    hasLiked = false;
-                     hasDisliked = false;
-                    imageLike.style.filter = '';
-                    imageDis.style.filter = '';
-                }
+               
             }
 
             // Check if "Submit" happens after "Like"
@@ -53,6 +48,7 @@ function checkGestureOutput() {
                 showDiv('voice_gesture'); // Show 'voice_gesture' if previously disliked
                 hasDisliked = false; // Reset the "Dislike" flag
             }
+            
 
             // Handle "Close" action
             //if (action === "Close") {
