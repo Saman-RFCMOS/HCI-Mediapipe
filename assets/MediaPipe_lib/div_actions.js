@@ -31,7 +31,7 @@ if (gestureOutput && starGesture) {
 
         // Ensure starGesture is visible
         if (starGesture.style.display !== 'none') {
-
+            console.log(action);
             // Get the three star elements
             const star1 = document.getElementById('star1');
             const star2 = document.getElementById('star2');
