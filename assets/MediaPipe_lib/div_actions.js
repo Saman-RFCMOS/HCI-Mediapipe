@@ -26,59 +26,50 @@ if (gestureOutput && starGesture) {
     const currentText = gestureOutput.innerText.trim();
     const actionMatch = currentText.match(/Action: (\w+)/);
 
-    // Initialize variables to track the gray state of each star
-    let star1Gray = true;
-    let star2Gray = true;
-    let star3Gray = true;
-
     if (actionMatch && actionMatch[1]) {
         const action = actionMatch[1];
 
+        // Ensure starGesture is visible
         if (starGesture.style.display !== 'none') {
+
+            // Get the three star elements
             const star1 = document.getElementById('star1');
             const star2 = document.getElementById('star2');
             const star3 = document.getElementById('star3');
+
+            // Initial gray overlay color
             const grayStar = "grayscale(100%)";
             const removeGray = "none";
 
-            // Apply gray color initially to all stars
-            star1.style.filter = grayStar;
-            star2.style.filter = grayStar;
-            star3.style.filter = grayStar;
-
             // Function to remove gray overlay from stars
-            function removeGrayOverlay(starElement, starNum) {
+            function removeGrayOverlay(starElement) {
                 starElement.style.filter = removeGray;
-                // Track that the star is no longer gray
-                if (starNum === 1) star1Gray = false;
-                if (starNum === 2) star2Gray = false;
-                if (starNum === 3) star3Gray = false;
             }
 
-            // Remove gray overlay based on the action
+            // Function to apply gray overlay to stars
+            function applyGrayOverlay(starElement) {
+                starElement.style.filter = grayStar;
+            }
+
+            // Track the current state of the stars (whether they are gray or not)
+            let starsState = [star1.style.filter, star2.style.filter, star3.style.filter];
+            
+            // Reset all stars to gray initially
+            applyGrayOverlay(star1);
+            applyGrayOverlay(star2);
+            applyGrayOverlay(star3);
+
+            // Update the state based on the action
             if (action === "1") {
-                removeGrayOverlay(star1, 1); // Remove gray from 1st star
+                removeGrayOverlay(star1); // Remove gray from 1st star
+                starsState[0] = removeGray; // Update the state of the 1st star
             } else if (action === "2") {
-                removeGrayOverlay(star1, 1); // Remove gray from 1st star
-                removeGrayOverlay(star2, 2); // Remove gray from 2nd star
+                removeGrayOverlay(star1); // Remove gray from 1st star
+                removeGrayOverlay(star2); // Remove gray from 2nd star
+                starsState[0] = removeGray; // Update the state of the 1st star
+                starsState[1] = removeGray; // Update the state of the 2nd star
             } else if (action === "3") {
-                removeGrayOverlay(star1, 1); // Remove gray from 1st star
-                removeGrayOverlay(star2, 2); // Remove gray from 2nd star
-                removeGrayOverlay(star3, 3); // Remove gray from 3rd star
-            }
-
-            // Handle the "Submit" action: Show "thank_you" if not all stars are gray
-            if (action === "Submit") {
-                // Check if all stars are gray
-                if (!star1Gray || !star2Gray || !star3Gray) {
-                    showDiv("thank_you");
-                } else {
-                    console.log("All stars are gray, cannot submit.");
-                }
-            }
-        }
-    }
-}
+                remov
 
 
     
