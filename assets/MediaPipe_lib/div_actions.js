@@ -1,6 +1,16 @@
 let hasLiked = false; // Flag to track if "Like" action occurred
 let hasDisliked = false; // Flag to track if "Dislike" action occurred
 
+function delayForFiveSeconds() {
+    let counttimer = 1;
+    const timerInter = setInterval(() => {
+        counttimer++;
+        if (counttimer > 5) {
+            clearInterval(timerInter); 
+        }
+    }, 1000); 
+}
+
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
@@ -18,8 +28,10 @@ function checkGestureOutput() {
             const action = actionMatch[1]; 
             if (thankGesture.style.display !== 'none') {
                     if (action === "Close") {
+                        delayForFiveSeconds();
                         modal.style.display = "none"; 
                         btn.disabled = true;
+                        btn.style.backgroundColor = "#D3D3D3"
                         btn.style.cursor = "not-allowed";        
                     }
             }
