@@ -16,14 +16,19 @@ function checkGestureOutput() {
                 if (action === "Like") {
                     hasLiked = true; // Set flag to true when user "Likes"
                     hasDisliked = false; // Reset "Dislike" flag
-                    const image = document.getElementById('Likeimg');
-                    image.style.filter = 'sepia(1) hue-rotate(180deg)';
+                    const imageLike = document.getElementById('Likeimg');
+                    imageLike.style.filter = 'sepia(1) hue-rotate(180deg)';
                     const imagesub = document.getElementById('OPsubmit');
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
                 } else if (action === "Dislike") {
                     hasDisliked = true; // Set flag to true when user "Dislikes"
                     hasLiked = false; // Reset "Like" flag
+                    const imageDis = document.getElementById('dislikeimg');
+                    imageDis.style.filter = 'sepia(1) hue-rotate(180deg)';
+                    const imagesub = document.getElementById('OPsubmit');
+                    imagesub.style.display = 'block'; // Change from 'none' to 'block'
+                    imagesub.style.opacity = '1';
                 }
             }
 
