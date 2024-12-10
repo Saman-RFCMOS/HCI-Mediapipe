@@ -9,6 +9,7 @@ function checkGestureOutput() {
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
     const micsub = document.getElementById('Micsubmit');
+    const imagesub = document.getElementById('OPsubmit');
 
 if (gestureOutput && voiceGesture) {
     const currentText = gestureOutput.innerText.trim();
