@@ -62,11 +62,9 @@ if (gestureOutput && starGesture) {
                 removeGrayOverlay(star2); // Remove gray from 2nd star
                 removeGrayOverlay(star3); // Remove gray from 3rd star
             }
-
-            // When action is "Submit", show "thank_you" div
-            if (action === "Submit") {
-                showDiv("thank_you");
-            }
+         //   if (action === "Submit") {
+              //  showDiv("thank_you");
+           // }
         }
     }
 }
