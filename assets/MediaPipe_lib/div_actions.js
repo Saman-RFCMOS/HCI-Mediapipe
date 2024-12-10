@@ -27,7 +27,7 @@ function checkGestureOutput() {
                         recoTimeDiv.innerText = `Recording: ${countdown} seconds`;
                     }
                     countdown--;
-                    if (countdown < 0) {
+                    if (countdown === 0) {
                         clearInterval(timerInterval); 
                         micsub.style.display = 'block';
                         micsub.style.opacity = '1';
