@@ -1,63 +1,75 @@
 let hasLiked = false; // Flag to track if "Like" action occurred
 let hasDisliked = false; // Flag to track if "Dislike" action occurred
-let timerStarted = false; // Flag to track if the timer is already running
 
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
-    const voiceGesture = document.getElementById("voice_gesture");
+    const voiceGesture =document.getElementById("voice_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
-    const micsub = document.getElementById('Micsubmit');
     const imagesub = document.getElementById('OPsubmit');
 
-    if (gestureOutput && voiceGesture) {
-        const currentText = gestureOutput.innerText.trim();
-        const actionMatch = currentText.match(/Action: (\w+)/);
-        if (actionMatch && actionMatch[1]) {
-            const action = actionMatch[1];
-            if (voiceGesture.style.display !== 'none' && !timerStarted) {
-                timerStarted = true; // Prevent re-initialization of the timer
-                const recoTimeDiv = document.getElementById('RecoTime');
-                let countdown = 5;
+if (gestureOutput && voiceGesture) {
+    // Ensure the timer runs only if voiceGesture is visible
+    if (voiceGesture.style.display !== 'none') {
+        const recoTimeDiv = document.getElementById('RecoTime');
+        const micsub = document.getElementById('Micsubmit');
+        let countdown = 5;
 
-                const timerInterval = setInterval(() => {
-                    if (recoTimeDiv) {
-                        recoTimeDiv.innerText = `Recording: ${countdown} seconds`;
-                    }
-                    countdown--;
-                    if (countdown === 0) {
-                        clearInterval(timerInterval); 
-                        micsub.style.display = 'block';
-                        micsub.style.opacity = '1';
-                        if (action === "Submit") {
-                            showDiv("thank_you");
-                        }
-                        if (recoTimeDiv) {
-                            recoTimeDiv.innerText = ''; // Clear the timer display
-                        }
-                    }
-                }, 1000);
+        // Start the timer
+        const timerInterval = setInterval(() => {
+            if (recoTimeDiv) {
+                recoTimeDiv.innerText = `Recording: ${countdown} seconds`; // Update the timer display
             }
-        }
+            countdown--;
+
+            if (countdown < 0) {
+                clearInterval(timerInterval); // Stop the timer
+                if (recoTimeDiv) {
+                    recoTimeDiv.innerText = ''; // Clear the timer display
+                }
+                
+                // Show the mic submission UI
+                if (micsub) {
+                    micsub.style.display = 'block';
+                    micsub.style.opacity = '1';
+                }
+
+                // Check for the gesture input after showing the mic submission
+                const currentText = gestureOutput.innerText.trim();
+                const actionMatch = currentText.match(/Action: (\w+)/);
+                if (actionMatch && actionMatch[1]) {
+                    const action = actionMatch[1];
+                    if (action === "Submit") {
+                        showDiv("thank_you"); // Navigate to the "thank you" div
+                    }
+                }
+            }
+        }, 1000); // Timer updates every second
     }
+}
+
+
+
+
+  
 
     if (gestureOutput && mainGesture) {
         const currentText = gestureOutput.innerText.trim();
         const actionMatch = currentText.match(/Action: (\w+)/);
         if (actionMatch && actionMatch[1]) {
-            const action = actionMatch[1];
+            const action = actionMatch[1]; 
             if (mainGesture.style.display !== 'none') {
                 if (action === "Like") {
-                    hasLiked = true;
-                    hasDisliked = false;
+                    hasLiked = true; 
+                    hasDisliked = false; 
                     imageLike.style.filter = 'sepia(1) hue-rotate(180deg)';
                     imageDis.style.filter = '';
-                    imagesub.style.display = 'block';
+                    imagesub.style.display = 'block'; 
                     imagesub.style.opacity = '1';
                 } else if (action === "Dislike") {
-                    hasDisliked = true;
+                    hasDisliked = true; 
                     hasLiked = false;
                     imageDis.style.filter = 'sepia(1) hue-rotate(180deg)';
                     imageLike.style.filter = '';
@@ -67,15 +79,23 @@ function checkGestureOutput() {
             }
             if (action === "Submit" && hasLiked) {
                 showDiv('star_gesture');
-                hasLiked = false;
+                hasLiked = false; 
             }
             if (action === "Submit" && hasDisliked) {
-                showDiv('voice_gesture');
-                hasDisliked = false;
+                showDiv('voice_gesture'); 
+                hasDisliked = false; 
             }
+            //if (action === "Close") {
+            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
+            //    hasLiked = false; // Reset both flags
+            //    hasDisliked = false;
+                //if (modal) {
+                //    modal.style.display = "none"; // Hide modal if it's open
+                //}
+            //}
         }
-    }
-}
+    } 
+}//MainGesture Function
 
 setInterval(checkGestureOutput, 1000);
 
