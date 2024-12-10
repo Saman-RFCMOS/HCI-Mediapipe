@@ -49,7 +49,7 @@ function checkGestureOutput() {
             //}
         }
     } 
-}
+}//MainGesture Function
 
 setInterval(checkGestureOutput, 1000);
 
