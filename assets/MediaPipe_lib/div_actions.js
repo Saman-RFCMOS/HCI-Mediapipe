@@ -8,7 +8,7 @@ function checkGestureOutput() {
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
-    const Micsub = document.getElementById('Micsubmit');
+    const micsub = document.getElementById('Micsubmit');
 
 if (gestureOutput && voiceGesture) {
     const currentText = gestureOutput.innerText.trim();
@@ -19,8 +19,8 @@ if (gestureOutput && voiceGesture) {
 
         if (voiceGesture.style.display !== 'none') {
             // Show the image or feedback while waiting
-            Micsub.style.display = 'block';
-            Micsub.style.opacity = '1';
+            micsub.style.display = 'block';
+            micsub.style.opacity = '1';
 
             // Ensure the timer runs only once
             let timerStarted = false;
