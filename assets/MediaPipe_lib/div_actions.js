@@ -11,8 +11,6 @@ function checkGestureOutput() {
     const micsub = document.getElementById('Micsubmit');
     const imagesub = document.getElementById('OPsubmit');
 
-let timerStarted = false;
-
 if (gestureOutput && voiceGesture) {
     const currentText = gestureOutput.innerText.trim();
     const actionMatch = currentText.match(/Action: (\w+)/);
@@ -20,39 +18,27 @@ if (gestureOutput && voiceGesture) {
     if (actionMatch && actionMatch[1]) {
         const action = actionMatch[1];
 
-        if (voiceGesture.style.display !== 'none' && !timerStarted) {
-            timerStarted = true; // Set the flag to prevent re-initialization
+        if (voiceGesture.style.display !== 'none') {
             const recoTimeDiv = document.getElementById('RecoTime'); 
-            let countdown = 5; // Start the countdown from 5 seconds
+            let countdown = 5; 
 
-            // Start the timer
             const timerInterval = setInterval(() => {
                 if (recoTimeDiv) {
                     recoTimeDiv.innerText = `Recording: ${countdown} seconds`;
                 }
                 countdown--;
-
-                // Stop the timer when countdown reaches below 0
                 if (countdown < 0) {
-                    clearInterval(timerInterval); // Stop the timer
-
-                    // Display mic submission and handle action
+                    clearInterval(timerInterval);
                     micsub.style.display = 'block';
                     micsub.style.opacity = '1';
                     if (action === "Submit") {
                         showDiv("thank_you");
-                    }
-
-                    // Clear the RecoTime display
-                    if (recoTimeDiv) {
-                        recoTimeDiv.innerText = '';
                     }
                 }
             }, 1000); // Update every 1 second
         }
     }
 }
-
 
 
 
