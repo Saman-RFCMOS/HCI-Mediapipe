@@ -18,9 +18,9 @@ function checkGestureOutput() {
                     hasDisliked = false; // Reset "Dislike" flag
                     const image = document.getElementById('Likeimg');
                     image.style.filter = 'sepia(1) hue-rotate(180deg)';
-                    const image = document.getElementById('OPsubmit');
-                    image.style.display = 'block'; // Change from 'none' to 'block'
-                    image.style.opacity = '1';
+                    const imagesub = document.getElementById('OPsubmit');
+                    imagesub.style.display = 'block'; // Change from 'none' to 'block'
+                    imagesub.style.opacity = '1';
                 } else if (action === "Dislike") {
                     hasDisliked = true; // Set flag to true when user "Dislikes"
                     hasLiked = false; // Reset "Like" flag
