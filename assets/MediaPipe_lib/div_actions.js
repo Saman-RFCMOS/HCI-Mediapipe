@@ -4,14 +4,15 @@ let hasDisliked = false; // Flag to track if "Dislike" action occurred
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
+    const voiceGesture=document.getElementByID("voice_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
     const imagesub = document.getElementById('OPsubmit');
-    
+    const currentText = gestureOutput.innerText.trim();
+    const actionMatch = currentText.match(/Action: (\w+)/);
     if (gestureOutput && mainGesture) {
-        const currentText = gestureOutput.innerText.trim();
-        const actionMatch = currentText.match(/Action: (\w+)/);
+       
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
             
