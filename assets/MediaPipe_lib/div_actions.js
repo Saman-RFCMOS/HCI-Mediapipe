@@ -4,7 +4,7 @@ let hasDisliked = false; // Flag to track if "Dislike" action occurred
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
-    const ThankGesture = document.getElementById("thank_you");
+    const thankGesture = document.getElementById("thank_you");
     const voiceGesture =document.getElementById("voice_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
@@ -16,9 +16,11 @@ function checkGestureOutput() {
         const actionMatch = currentText.match(/Action: (\w+)/);
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
-            if (ThankGesture.style.display !== 'none') {
+            if (thankGesture.style.display !== 'none') {
                     if (action === "Close") {
                         modal.style.display = "none"; 
+                        btn.disabled = true;
+                        btn.style.cursor = "not-allowed";        
                     }
             }
         }
