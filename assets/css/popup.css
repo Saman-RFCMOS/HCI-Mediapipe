@@ -143,6 +143,7 @@
   display: none;
    position: absolute; 
     right: 10px;
+    top:100px;
     text-align: center;
   color: white;
   background-color: rgba(0, 0, 0, 0.7);
