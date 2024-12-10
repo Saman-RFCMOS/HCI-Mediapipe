@@ -34,6 +34,12 @@ function checkGestureOutput() {
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
                 }
+                else{
+                    hasLiked = false;
+                     hasDisliked = false;
+                    imageLike.style.filter = '';
+                    imageDis.style.filter = '';
+                }
             }
 
             // Check if "Submit" happens after "Like"
