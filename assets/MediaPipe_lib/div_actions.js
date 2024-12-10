@@ -11,35 +11,33 @@ function checkGestureOutput() {
     const imagesub = document.getElementById('OPsubmit');
 
 if (gestureOutput && voiceGesture) {
-        const currentText = gestureOutput.innerText.trim();
-        const actionMatch = currentText.match(/Action: (\w+)/);
-        mainGesture.style.display === 'none';
-        if (actionMatch && actionMatch[1]) {
-            const action = actionMatch[1]; 
-            if (voiceGesture.style.display !== 'none') {
-                imagesub.style.display = 'block'; 
-                imagesub.style.opacity = '1';
+    const currentText = gestureOutput.innerText.trim();
+    const actionMatch = currentText.match(/Action: (\w+)/);
 
-            function onTimerComplete() {
-                if (action === "Submit") {
-                    showDiv('voice_gesture');
-                }
-                                }
+    if (actionMatch && actionMatch[1]) {
+        const action = actionMatch[1];
 
+        if (voiceGesture.style.display !== 'none') {
+            // Show the image or feedback while waiting
+            imagesub.style.display = 'block';
+            imagesub.style.opacity = '1';
+
+            // Start a 5-second timer
             function startTimer(duration, callback) {
-            console.log("Timer started for " + duration + " milliseconds.");
-             setTimeout(callback, duration);
+                console.log("Timer started for " + duration + " milliseconds.");
+                setTimeout(callback, duration);
             }
 
-            let condition = true; 
-
-            if (true) {
-            startTimer(3000, onTimerComplete);
-                            }
-
-            }
+            startTimer(5000, () => {
+                // Check if action is "Submit" after 5 seconds
+                if (action === "Submit") {
+                    showDiv('thank_you');
+                }
+            });
         }
-    } 
+    }
+}
+
   
 
     if (gestureOutput && mainGesture) {
