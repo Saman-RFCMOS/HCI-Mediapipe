@@ -8,7 +8,7 @@ function checkGestureOutput() {
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
-    const imagesub = document.getElementById('OPsubmit');
+    const Micsub = document.getElementById('Micsubmit');
 
 if (gestureOutput && voiceGesture) {
     const currentText = gestureOutput.innerText.trim();
@@ -22,21 +22,39 @@ if (gestureOutput && voiceGesture) {
             imagesub.style.display = 'block';
             imagesub.style.opacity = '1';
 
-            // Start a 5-second timer
-            function startTimer(duration, callback) {
-                console.log("Timer started for " + duration + " milliseconds.");
-                setTimeout(callback, duration);
-            }
+            // Ensure the timer runs only once
+            let timerStarted = false;
 
-            startTimer(5000, () => {
-                // Check if action is "Submit" after 5 seconds
-                if (action === "Submit") {
-                    showDiv('thank_you');
-                }
-            });
+            if (!timerStarted) {
+                timerStarted = true;
+
+                const recoTimeDiv = document.getElementById('RecoTime'); // Reference to the RecoTime div
+                let countdown = 5; // Start from 5 seconds
+
+                // Update the timer every second
+                const timerInterval = setInterval(() => {
+                    if (recoTimeDiv) {
+                        recoTimeDiv.innerText = `Time remaining: ${countdown} seconds`;
+                    }
+                    countdown--;
+
+                    // When the countdown ends
+                    if (countdown < 0) {
+                        clearInterval(timerInterval); // Stop the interval
+                        if (action === "Submit") {
+                            showDiv("thank_you");
+                        }
+                        if (recoTimeDiv) {
+                            recoTimeDiv.innerText = ''; // Clear the timer display
+                        }
+                        timerStarted = false; // Reset the flag
+                    }
+                }, 1000); // Update every 1 second
+            }
         }
     }
 }
+
 
   
 
