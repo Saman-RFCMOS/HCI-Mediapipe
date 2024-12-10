@@ -141,7 +141,7 @@
 
 #gesture_output {
   display: none;
-  position: relative;
+  position: absolute;
   top:20px;
   right: 10px;
   color: white;
