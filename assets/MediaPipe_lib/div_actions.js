@@ -28,14 +28,30 @@ if (gestureOutput && starGesture) {
 
     if (actionMatch && actionMatch[1]) {
         const action = actionMatch[1];
+
+        // Ensure starGesture is visible
         if (starGesture.style.display !== 'none') {
+
+            // Get the three star elements
             const star1 = document.getElementById('star1');
             const star2 = document.getElementById('star2');
             const star3 = document.getElementById('star3');
-            const grayStar = "gray"; // Apply gray color initially
+
+            // Initially, gray out all the stars
+            const grayStar = "grayscale(100%)"; // Apply gray color initially
+            const removeGray = "none"; // No filter when gray is removed
+
+            // Apply gray overlay to all stars
+            star1.style.filter = grayStar;
+            star2.style.filter = grayStar;
+            star3.style.filter = grayStar;
+
+            // Function to remove gray overlay from stars
             function removeGrayOverlay(starElement) {
-                starElement.style.filter = 'none'; 
+                starElement.style.filter = removeGray; // Remove gray filter (color overlay)
             }
+
+            // Check the action and update stars accordingly
             if (action === "1 Finger") {
                 removeGrayOverlay(star1); // Remove gray from 1st star
             } else if (action === "2 Fingers") {
@@ -46,6 +62,8 @@ if (gestureOutput && starGesture) {
                 removeGrayOverlay(star2); // Remove gray from 2nd star
                 removeGrayOverlay(star3); // Remove gray from 3rd star
             }
+
+            // When action is "Submit", show "thank_you" div
             if (action === "Submit") {
                 showDiv("thank_you");
             }
