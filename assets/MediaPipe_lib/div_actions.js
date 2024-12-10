@@ -20,21 +20,25 @@ if (gestureOutput && voiceGesture) {
                 if (action === "Submit") {
                     imagesub.style.display = 'block'; 
                     imagesub.style.opacity = '1';
-                    showDiv('thank_you'); 
+            function onTimerComplete() {
+                showDiv('thank_you'); 
+                                }
+
+            function startTimer(duration, callback) {
+            console.log("Timer started for " + duration + " milliseconds.");
+             setTimeout(callback, duration);
+            }
+
+            let condition = true; 
+
+            if (true) {
+            startTimer(3000, onTimerComplete);
+                            }
                 } 
             }
-            //if (action === "Close") {
-            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
-            //    hasLiked = false; // Reset both flags
-            //    hasDisliked = false;
-                //if (modal) {
-                //    modal.style.display = "none"; // Hide modal if it's open
-                //}
-            //}
         }
     } 
-
-    
+  
 
     if (gestureOutput && mainGesture) {
         const currentText = gestureOutput.innerText.trim();
