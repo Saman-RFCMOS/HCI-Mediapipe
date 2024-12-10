@@ -19,8 +19,8 @@ if (gestureOutput && voiceGesture) {
 
         if (voiceGesture.style.display !== 'none') {
             // Show the image or feedback while waiting
-            imagesub.style.display = 'block';
-            imagesub.style.opacity = '1';
+            Micsub.style.display = 'block';
+            Micsub.style.opacity = '1';
 
             // Ensure the timer runs only once
             let timerStarted = false;
