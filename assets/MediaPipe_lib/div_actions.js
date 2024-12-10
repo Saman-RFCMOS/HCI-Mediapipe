@@ -16,6 +16,7 @@ function checkGestureOutput() {
     const mainGesture = document.getElementById("main_gesture");
     const thankGesture = document.getElementById("thank_you");
     const voiceGesture =document.getElementById("voice_gesture");
+    const voiceGesture =document.getElementById("star_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
@@ -100,14 +101,6 @@ if (gestureOutput && voiceGesture) {
                 showDiv('voice_gesture'); 
                 hasDisliked = false; 
             }
-            //if (action === "Close") {
-            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
-            //    hasLiked = false; // Reset both flags
-            //    hasDisliked = false;
-                //if (modal) {
-                //    modal.style.display = "none"; // Hide modal if it's open
-                //}
-            //}
         }
     } 
 }//MainGesture Function
