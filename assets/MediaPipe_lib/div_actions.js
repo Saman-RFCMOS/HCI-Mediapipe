@@ -11,7 +11,7 @@ function checkGestureOutput() {
     const imageDis = document.getElementById('dislikeimg');
     const imagesub = document.getElementById('OPsubmit');
 
-    if (gestureOutput && ThankGesture) {
+    if (gestureOutput && thankGesture) {
         const currentText = gestureOutput.innerText.trim();
         const actionMatch = currentText.match(/Action: (\w+)/);
         if (actionMatch && actionMatch[1]) {
