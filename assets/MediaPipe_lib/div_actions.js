@@ -52,13 +52,13 @@ if (gestureOutput && starGesture) {
             }
 
             // Check the action and update stars accordingly
-            if (action === "1 Finger") {
+            if (action === "1") {
                 alert("1 is detected");
                 removeGrayOverlay(star1); // Remove gray from 1st star
-            } else if (action === "2 Fingers") {
+            } else if (action === "2") {
                 removeGrayOverlay(star1); // Remove gray from 1st star
                 removeGrayOverlay(star2); // Remove gray from 2nd star
-            } else if (action === "3 Fingers") {
+            } else if (action === "3") {
                 removeGrayOverlay(star1); // Remove gray from 1st star
                 removeGrayOverlay(star2); // Remove gray from 2nd star
                 removeGrayOverlay(star3); // Remove gray from 3rd star
