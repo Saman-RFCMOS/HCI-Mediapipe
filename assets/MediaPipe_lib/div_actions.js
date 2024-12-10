@@ -28,8 +28,7 @@ function checkGestureOutput() {
                     }
                     countdown--;
                     if (countdown < 0) {
-                        clearInterval(timerInterval); // Stop the timer
-                        timerStarted = false; // Allow the timer to restart if needed
+                        clearInterval(timerInterval); 
                         micsub.style.display = 'block';
                         micsub.style.opacity = '1';
                         if (action === "Submit") {
