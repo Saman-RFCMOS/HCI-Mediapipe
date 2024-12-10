@@ -4,56 +4,57 @@ let hasDisliked = false; // Flag to track if "Dislike" action occurred
 function checkGestureOutput() {
     const gestureOutput = document.getElementById("gesture_output");
     const mainGesture = document.getElementById("main_gesture");
+    const ThankGesture = document.getElementById("thank_you");
     const voiceGesture =document.getElementById("voice_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
     const imagesub = document.getElementById('OPsubmit');
 
+    if (gestureOutput && ThankGesture) {
+        const currentText = gestureOutput.innerText.trim();
+        const actionMatch = currentText.match(/Action: (\w+)/);
+        if (actionMatch && actionMatch[1]) {
+            const action = actionMatch[1]; 
+            if (ThankGesture.style.display !== 'none') {
+                    if (action === "Close") {
+                        modal.style.display = "none"; 
+                    }
+            }
+        }
+    }
+
 if (gestureOutput && voiceGesture) {
-    // Ensure the timer runs only if voiceGesture is visible
     if (voiceGesture.style.display !== 'none') {
         const recoTimeDiv = document.getElementById('RecoTime');
         const micsub = document.getElementById('Micsubmit');
         let countdown = 5;
-
-        // Start the timer
         const timerInterval = setInterval(() => {
             if (recoTimeDiv) {
-                recoTimeDiv.innerText = `Recording: ${countdown} seconds`; // Update the timer display
+                recoTimeDiv.innerText = `Recording: ${countdown} seconds`; 
             }
             countdown--;
-
             if (countdown < 0) {
-                clearInterval(timerInterval); // Stop the timer
+                clearInterval(timerInterval); 
                 if (recoTimeDiv) {
-                    recoTimeDiv.innerText = ''; // Clear the timer display
+                    recoTimeDiv.innerText = ''; 
                 }
-                
-                // Show the mic submission UI
                 if (micsub) {
                     micsub.style.display = 'block';
                     micsub.style.opacity = '1';
                 }
-
-                // Check for the gesture input after showing the mic submission
                 const currentText = gestureOutput.innerText.trim();
                 const actionMatch = currentText.match(/Action: (\w+)/);
                 if (actionMatch && actionMatch[1]) {
                     const action = actionMatch[1];
                     if (action === "Submit") {
-                        showDiv("thank_you"); // Navigate to the "thank you" div
+                        showDiv("thank_you");
                     }
                 }
             }
-        }, 1000); // Timer updates every second
+        }, 1000); 
     }
 }
-
-
-
-
-  
 
     if (gestureOutput && mainGesture) {
         const currentText = gestureOutput.innerText.trim();
