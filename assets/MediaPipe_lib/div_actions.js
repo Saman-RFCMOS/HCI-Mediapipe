@@ -9,49 +9,62 @@ function checkGestureOutput() {
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
     const imagesub = document.getElementById('OPsubmit');
-    const currentText = gestureOutput.innerText.trim();
-    const actionMatch = currentText.match(/Action: (\w+)/);
+
     if (gestureOutput && mainGesture) {
-       
+        const currentText = gestureOutput.innerText.trim();
+        const actionMatch = currentText.match(/Action: (\w+)/);
         if (actionMatch && actionMatch[1]) {
             const action = actionMatch[1]; 
-            
             if (mainGesture.style.display !== 'none') {
                 if (action === "Like") {
                     hasLiked = true; // Set flag to true when user "Likes"
                     hasDisliked = false; // Reset "Dislike" flag
-                   
                     imageLike.style.filter = 'sepia(1) hue-rotate(180deg)';
                     imageDis.style.filter = '';
-                    
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
                 } else if (action === "Dislike") {
                     hasDisliked = true; // Set flag to true when user "Dislikes"
                     hasLiked = false; // Reset "Like" flag
-                    
                     imageDis.style.filter = 'sepia(1) hue-rotate(180deg)';
                     imageLike.style.filter = '';
                     imagesub.style.display = 'block'; // Change from 'none' to 'block'
                     imagesub.style.opacity = '1';
                 }
-               
             }
-
-            // Check if "Submit" happens after "Like"
             if (action === "Submit" && hasLiked) {
-                showDiv('star_gesture'); // Show 'star_gesture' if previously liked
-                hasLiked = false; // Reset the "Like" flag
+                showDiv('star_gesture');
+                hasLiked = false; 
             }
-
-            // Check if "Submit" happens after "Dislike"
             if (action === "Submit" && hasDisliked) {
-                showDiv('voice_gesture'); // Show 'voice_gesture' if previously disliked
-                hasDisliked = false; // Reset the "Dislike" flag
+                showDiv('voice_gesture'); 
+                hasDisliked = false; 
             }
-            
+            //if (action === "Close") {
+            //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
+            //    hasLiked = false; // Reset both flags
+            //    hasDisliked = false;
+                //if (modal) {
+                //    modal.style.display = "none"; // Hide modal if it's open
+                //}
+            //}
+        }
+    }
 
-            // Handle "Close" action
+     if (gestureOutput && voiceGesture) {
+        const currentText = gestureOutput.innerText.trim();
+        const actionMatch = currentText.match(/Action: (\w+)/);
+        if (actionMatch && actionMatch[1]) {
+            const action = actionMatch[1]; 
+            if (voiceGesture.style.display !== 'none') {
+                if (action === "Submit") {
+                    imagesub.style.display = 'block'; // Change from 'none' to 'block'
+                    imagesub.style.opacity = '1';
+                    showDiv('thank_you'); 
+                    hasLiked = false; 
+                    hasDisliked = false;
+                } 
+            }
             //if (action === "Close") {
             //    showDiv('main_gesture'); // Show 'main_gesture' when "Close" action occurs
             //    hasLiked = false; // Reset both flags
