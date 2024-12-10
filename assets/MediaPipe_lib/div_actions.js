@@ -16,11 +16,44 @@ function checkGestureOutput() {
     const mainGesture = document.getElementById("main_gesture");
     const thankGesture = document.getElementById("thank_you");
     const voiceGesture =document.getElementById("voice_gesture");
-    const voiceGesture =document.getElementById("star_gesture");
+    const starGesture =document.getElementById("star_gesture");
     const modal = document.getElementById("survey_popup");
     const imageLike = document.getElementById('Likeimg');
     const imageDis = document.getElementById('dislikeimg');
     const imagesub = document.getElementById('OPsubmit');
+
+if (gestureOutput && starGesture) {
+    const currentText = gestureOutput.innerText.trim();
+    const actionMatch = currentText.match(/Action: (\w+)/);
+
+    if (actionMatch && actionMatch[1]) {
+        const action = actionMatch[1];
+        if (starGesture.style.display !== 'none') {
+            const star1 = document.getElementById('star1');
+            const star2 = document.getElementById('star2');
+            const star3 = document.getElementById('star3');
+            const grayStar = "gray"; // Apply gray color initially
+            function removeGrayOverlay(starElement) {
+                starElement.style.filter = 'none'; 
+            }
+            if (action === "1 Finger") {
+                removeGrayOverlay(star1); // Remove gray from 1st star
+            } else if (action === "2 Fingers") {
+                removeGrayOverlay(star1); // Remove gray from 1st star
+                removeGrayOverlay(star2); // Remove gray from 2nd star
+            } else if (action === "3 Fingers") {
+                removeGrayOverlay(star1); // Remove gray from 1st star
+                removeGrayOverlay(star2); // Remove gray from 2nd star
+                removeGrayOverlay(star3); // Remove gray from 3rd star
+            }
+            if (action === "Submit") {
+                showDiv("thank_you");
+            }
+        }
+    }
+}
+
+    
 
     if (gestureOutput && thankGesture) {
         const currentText = gestureOutput.innerText.trim();
