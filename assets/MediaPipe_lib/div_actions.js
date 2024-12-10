@@ -1,5 +1,5 @@
-let hasLiked = false; // 
-let hasDisliked = false; // 
+let hasLiked = false; 
+let hasDisliked = false; 
 
 function delayForFiveSeconds() {
     let counttimer = 1;
@@ -28,70 +28,59 @@ if (gestureOutput && starGesture) {
 
     if (actionMatch && actionMatch[1]) {
         const action = actionMatch[1];
-
-        // Ensure starGesture is visible
         if (starGesture.style.display !== 'none') {
 
-            // Get the three star elements
             const star1 = document.getElementById('star1');
             const star2 = document.getElementById('star2');
             const star3 = document.getElementById('star3');
 
-            // Initial gray overlay color
             const grayStar = "grayscale(100%)";
             const removeGray = "none";
 
-            // Function to remove gray overlay from stars
             function removeGrayOverlay(starElement) {
                 starElement.style.filter = removeGray;
             }
-
-            // Function to apply gray overlay to stars
             function applyGrayOverlay(starElement) {
                 starElement.style.filter = grayStar;
             }
 
-            // Track the current state of the stars (whether they are gray or not)
             let starsState = [star1.style.filter, star2.style.filter, star3.style.filter];
-            
-            // Reset all stars to gray initially
+
             applyGrayOverlay(star1);
             applyGrayOverlay(star2);
             applyGrayOverlay(star3);
-
-            // Update the state based on the action
             if (action === "1") {
-                removeGrayOverlay(star1); // Remove gray from 1st star
-                starsState[0] = removeGray; // Update the state of the 1st star
+                removeGrayOverlay(star1);
+                starsState[0] = removeGray; 
             } else if (action === "2") {
-                removeGrayOverlay(star1); // Remove gray from 1st star
-                removeGrayOverlay(star2); // Remove gray from 2nd star
-                starsState[0] = removeGray; // Update the state of the 1st star
-                starsState[1] = removeGray; // Update the state of the 2nd star
+                removeGrayOverlay(star1); 
+                removeGrayOverlay(star2); 
+                starsState[0] = removeGray; 
+                starsState[1] = removeGray; 
             } else if (action === "3") {
-                removeGrayOverlay(star1); // Remove gray from 1st star
-                removeGrayOverlay(star2); // Remove gray from 2nd star
-                removeGrayOverlay(star3); // Remove gray from 3rd star
-                starsState[0] = removeGray; // Update the state of the 1st star
-                starsState[1] = removeGray; // Update the state of the 2nd star
-                starsState[2] = removeGray; // Update the state of the 3rd star
+                removeGrayOverlay(star1);
+                removeGrayOverlay(star2);
+                removeGrayOverlay(star3); 
+                starsState[0] = removeGray;
+                starsState[1] = removeGray; 
+                starsState[2] = removeGray; 
             }
-
-            // Get the div element for the error message (you can create this in HTML)
             const errorDiv = document.getElementById("error-message");
-
-            // Check if the action is "Submit" and if not all stars are gray
+            if (starsState.some(state => state !== grayStar)) {
+            if (errorDiv) {
+                errorDiv.style.display = "none"; 
+                }
+                }
             if (action === "Submit") {
-                if (starsState.includes(removeGray)) { // At least one star is not gray
+                if (starsState.includes(removeGray)) { 
                     showDiv("thank_you");
                     if (errorDiv) {
-                        errorDiv.style.display = "none"; // Hide the error message if submit works
+                        errorDiv.style.display = "none";
                     }
                 } else {
-                    // Show error message in the div
                     if (errorDiv) {
-                        errorDiv.style.display = "block"; // Make sure error message div is visible
-                        errorDiv.innerText = "All stars are still gray, cannot submit.";
+                        errorDiv.style.display = "block"; 
+                        errorDiv.innerText = "No star!!, cannot submit.";
                     }
                 }
             }
@@ -99,9 +88,6 @@ if (gestureOutput && starGesture) {
     }
 }
 
-
-
-    
 
     if (gestureOutput && thankGesture) {
         const currentText = gestureOutput.innerText.trim();
