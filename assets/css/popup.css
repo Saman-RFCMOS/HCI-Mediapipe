@@ -142,9 +142,7 @@
 #gesture_output {
   display: none;
    position: absolute; 
-    top: 150px;
     right: 10px;
-    z-index: 1; 
     text-align: center;
   color: white;
   background-color: rgba(0, 0, 0, 0.7);
