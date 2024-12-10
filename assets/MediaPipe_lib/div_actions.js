@@ -1,5 +1,5 @@
-let hasLiked = false; // Flag to track if "Like" action occurred
-let hasDisliked = false; // Flag to track if "Dislike" action occurred
+let hasLiked = false; // 
+let hasDisliked = false; // 
 
 function delayForFiveSeconds() {
     let counttimer = 1;
@@ -77,17 +77,28 @@ if (gestureOutput && starGesture) {
                 starsState[2] = removeGray; // Update the state of the 3rd star
             }
 
+            // Get the div element for the error message (you can create this in HTML)
+            const errorDiv = document.getElementById("error-message");
+
             // Check if the action is "Submit" and if not all stars are gray
             if (action === "Submit") {
                 if (starsState.includes(removeGray)) { // At least one star is not gray
                     showDiv("thank_you");
+                    if (errorDiv) {
+                        errorDiv.style.display = "none"; // Hide the error message if submit works
+                    }
                 } else {
-                    console.log("All stars are still gray, cannot submit.");
+                    // Show error message in the div
+                    if (errorDiv) {
+                        errorDiv.style.display = "block"; // Make sure error message div is visible
+                        errorDiv.innerText = "All stars are still gray, cannot submit.";
+                    }
                 }
             }
         }
     }
 }
+
 
 
     
